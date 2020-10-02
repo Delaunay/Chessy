@@ -20,7 +20,7 @@ __meta__ = {
 "_editor_floor_": Vector3( -8, 1, 0 )
 }
 
-[node name="Character" parent="." instance=ExtResource( 2 )]
-transform = Transform( -2.75255, 0, 4.17414, 0, 5, 0, -4.17414, 0, -2.75255, -1.29846, 1.31339, 3.48695 )
+[node name="Character" parent="GridMap" instance=ExtResource( 2 )]
+transform = Transform( -2.75255, 0, 4.17414, 0, 5, 0, -4.17414, 0, -2.75255, -1.03962, 1.31339, 4.19603 )
 
-[node name="Tactician" parent="." instance=ExtResource( 3 )]
+[node name="Tactician" parent="GridMap" instance=ExtResource( 3 )]

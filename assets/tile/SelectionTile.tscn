@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/tile/hex.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://assets/tile/SelectionTexture.tres" type="Texture" id=2]
+
+[sub_resource type="VisualShaderNodeTexture" id=1]
+texture = ExtResource( 2 )
+
+[sub_resource type="VisualShader" id=2]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform sampler2D tex_frg_5;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Texture:5
+	vec4 tex_frg_5_read = texture(tex_frg_5, UV.xy);
+	vec3 n_out5p0 = tex_frg_5_read.rgb;
+	float n_out5p1 = tex_frg_5_read.a;
+
+// Output:0
+	ALBEDO = n_out5p0;
+	ALPHA = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -32, 55 )
+nodes/fragment/0/position = Vector2( 760, 80 )
+nodes/fragment/5/node = SubResource( 1 )
+nodes/fragment/5/position = Vector2( 330, 176 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+
+[node name="Cursor" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 0, 0.01, 0 )
+mesh = ExtResource( 1 )
+material/0 = SubResource( 3 )

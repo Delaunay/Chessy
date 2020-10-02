@@ -17,8 +17,8 @@ __meta__ = {
 [node name="Sprite3D" type="AnimatedSprite3D" parent="."]
 billboard = 1
 frames = ExtResource( 1 )
-animation = "idle"
-frame = 12
+animation = "attack"
+frame = 17
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
