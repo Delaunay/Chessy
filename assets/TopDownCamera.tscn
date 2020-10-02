@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/TopDownCamera.gd" type="Script" id=2]
+
+[sub_resource type="BoxShape" id=1]
+
+[node name="Target" type="KinematicBody"]
+input_ray_pickable = false
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": "Simple top down camera that can move in all directions and zoom in and out"
+}
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2, 0 )
+
+[node name="RayCast" type="RayCast" parent="."]
+enabled = true
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+visible = false
+shape = SubResource( 1 )
+disabled = true

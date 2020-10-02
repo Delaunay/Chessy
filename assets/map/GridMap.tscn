@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/map/Tiles.tres" type="MeshLibrary" id=1]
-[ext_resource path="res://assets/character/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/character/Character.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/tactician.tscn" type="PackedScene" id=3]
 
 [node name="World" type="Spatial"]
 
@@ -19,5 +20,7 @@ __meta__ = {
 "_editor_floor_": Vector3( -8, 1, 0 )
 }
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
+[node name="Character" parent="." instance=ExtResource( 2 )]
 transform = Transform( -2.75255, 0, 4.17414, 0, 5, 0, -4.17414, 0, -2.75255, -1.29846, 1.31339, 3.48695 )
+
+[node name="Tactician" parent="." instance=ExtResource( 3 )]
