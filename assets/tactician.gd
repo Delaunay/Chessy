@@ -1,45 +1,39 @@
 extends Spatial
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var cursor_position = Vector3(0, 0, 0)
+var grid_map = null
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	var parent = get_parent()
+
+	if not parent is GridMap:
+		print('Error! tactician needs to be a child of GridMap')
+
+	grid_map = parent
+	cursor_position = snap_to_grid(cursor_position)
+	$Cursor.translate(cursor_position)
+
+
+func snap_to_grid(pos):
+	var cell = grid_map.world_to_map(pos)
+	cell.y -= 1
+	return grid_map.map_to_world(cell.x, cell.y, cell.z)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-var cursor_position = Vector3(0, 0, 0)
-
 
 func _input(event):
 	var collision = $Camera.select_object(event)
 	
-	# {collider:[GridMap:1321], collider_id:1321, normal:(0.004067, 0.999941, 0.010094), position:(-3.100389, 0.544514, 4.125091), rid:[RID], shape:37}
-
 	if collision:
-		var parent = get_parent()
-
-		if not parent is GridMap:
-			print('Error! tactician needs to be a child of GridMap')
-			return false
-
-		var cell = parent.world_to_map(collision.position)
-		cell.y -= 1
-		var cell_pos = parent.map_to_world(cell.x, cell.y, cell.z)
-		
-		$Cursor.translate(cell_pos - cursor_position)
-		cursor_position = cell_pos
-		
-		print("Move and slide to", cell_pos)
-		# collision.collider
-		
-		print(collision)
+		var pos = snap_to_grid(collision.position)
+		$Cursor.translate(pos - cursor_position)
+		cursor_position = pos
 		return true
 
-	
+
