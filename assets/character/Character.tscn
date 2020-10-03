@@ -18,6 +18,7 @@ __meta__ = {
 billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
+frame = 5
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
