@@ -51,22 +51,20 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector3.UP)
 
 
-func select_object(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and not event.pressed:
-		# make a projection from the Camera to the button and get the object it finds
-		var pos = event.position
-		var from = $Camera.project_ray_origin(pos)
-		var normal = $Camera.project_ray_normal(pos)
-		
-		var ray_start = from
-		var ray_end =  from + normal * 5000 
-		var space_state = get_world().direct_space_state
-		return space_state.intersect_ray(ray_start, ray_end, [])
+func select_object(pos):
+	# make a projection from the Camera to the button and get the object it finds
+	var from = $Camera.project_ray_origin(pos)
+	var normal = $Camera.project_ray_normal(pos)
+	
+	var ray_start = from
+	var ray_end =  from + normal * 5000 
+	var space_state = get_world().direct_space_state
+	return space_state.intersect_ray(ray_start, ray_end, [])
 
-		# Does not work ?
-		# $RayCast.enabled = true
-		# $RayCast.cast_to = from + normal * 5000
-		# $RayCast.force_raycast_update()
-		# print($RayCast.get_collider())
-		# print("Mouse click", event.position)
+	# Does not work ?
+	# $RayCast.enabled = true
+	# $RayCast.cast_to = from + normal * 5000
+	# $RayCast.force_raycast_update()
+	# print($RayCast.get_collider())
+	# print("Mouse click", event.position)
 	

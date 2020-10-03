@@ -7,7 +7,7 @@
 extents = Vector3( 0.1, 0.16, 0.1 )
 
 [node name="Player" type="KinematicBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.156815, 0 )
+transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.791685, 0 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true,
@@ -17,8 +17,7 @@ __meta__ = {
 [node name="Sprite3D" type="AnimatedSprite3D" parent="."]
 billboard = 1
 frames = ExtResource( 1 )
-animation = "attack"
-frame = 17
+animation = "idle"
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
