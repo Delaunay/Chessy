@@ -1,7 +1,6 @@
 extends Spatial
 
 
-var cursor_position = Vector3(0, 0, 0)
 var grid_map: GridMap = null
 var characters = {}
 var cell_size = null
@@ -29,8 +28,8 @@ func create_character(pos):
 func add_units():
 	var positions = [
 		Vector3(-1.5, 1, -2.598076),
-		Vector3(1.5, 1, -2.598076),
-		Vector3(0, 0.5, 0)
+		Vector3(1.5, 1, -0.866025),
+		Vector3(-1.5, 0, 0.866025)
 	]
 	
 	for p in positions:
@@ -51,9 +50,9 @@ func _ready():
 	$HUD/UnitInfo.visible = false
 
 
-func snap_to_grid(pos):
+func snap_to_grid(pos, offset=1):
 	var cell = grid_map.world_to_map(pos)
-	cell.y -= 1
+	cell.y -= offset
 
 	# make sure that a cell exist under the map position
 	if grid_map.get_cell_item(cell.x, cell.y, cell.z) == GridMap.INVALID_CELL_ITEM:
@@ -67,8 +66,8 @@ func snap_to_grid(pos):
 #	pass
 
 func display(obj = null):
-	var display_container = $HUD/UnitInfo/Preview/Viewport/DisplayWorld/Container
-	
+	var display_container = $HUD/UnitInfo/VBoxContainer/Preview/Viewport/DisplayWorld/Container
+
 	for child in display_container.get_children():
 		display_container.remove_child(child)
 		
@@ -84,16 +83,13 @@ func select_object(event, pos, collision):
 	var obj = null
 
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and not event.pressed:
+
 		if collision.collider is GridMap:
 			selection = null
 			unit_selected = false
 		else:
 			selection = collision.collider
-			var pos2 = selection.get_global_transform().origin
 			obj = character_asset.instance()
-
-			# $HUD/ViewportContainer/Viewport/DisplayWorld(selection)
-			print('Selection')
 
 			if cell in characters:
 				unit_selected = true
@@ -112,13 +108,21 @@ func _input(event):
 		collision = $Camera.select_object(event.position)
 
 	if collision:
-		pos = snap_to_grid(collision.position)
+		var offset = 1
+
+		if collision.collider is GridMap:
+			pos = collision.position
+		else:
+			# Object should have a position which is compatible with 
+			# our grid system so we know that this will get us a tile
+			pos = collision.collider.get_global_transform().origin
+			offset = 1
+
+		pos = snap_to_grid(pos, offset)
 
 	if pos != null:
-		$Cursor.translate(pos - cursor_position)
-		cursor_position = pos
+		$Cursor.translate(pos - $Cursor.get_global_transform().origin)
 		select_object(event, pos, collision)
-
 
 		return true
 

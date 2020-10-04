@@ -27,30 +27,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="HUD"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -139.0
-margin_bottom = 70.0
-text = "Inventory"
-icon = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="UnitInfo" parent="HUD" instance=ExtResource( 5 )]
-anchor_top = 0.324
-anchor_right = 0.0
-anchor_bottom = 0.678
-margin_left = 2.0
-margin_right = 275.0
-margin_bottom = -3.05176e-05
+anchor_left = 0.041
+anchor_top = 0.072
+anchor_right = 0.201
+anchor_bottom = 0.072
+margin_left = 0.216
+margin_top = -3.8147e-06
+margin_right = 0.375992
+margin_bottom = 332.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -48.0
+margin_top = -70.0
 mouse_filter = 0
 alignment = 1
 __meta__ = {

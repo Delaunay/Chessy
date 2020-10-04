@@ -2,6 +2,7 @@
 
 [ext_resource path="res://assets/tile/hex.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://assets/tile/uv.png" type="Texture" id=2]
+[ext_resource path="res://assets/tile/TileShape.tres" type="Shape" id=3]
 
 [sub_resource type="VisualShaderNodeTexture" id=1]
 texture = ExtResource( 2 )
@@ -44,9 +45,6 @@ nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
 [sub_resource type="ShaderMaterial" id=3]
 shader = SubResource( 2 )
 
-[sub_resource type="ConvexPolygonShape" id=4]
-points = PoolVector3Array( 0, 0, 0, 0, 0, -1, -0.866, 0, -0.5, -0.866, 0, 0.5, 0, 0, 1, 0.866, 0, 0.5, 0.866, 0, -0.5, 0, 0.5, 0, 0, 0.5, -1, -0.866, 0.5, -0.5, -0.866, 0.5, 0.5, 0, 0.5, 1, 0.866, 0.5, 0.5, 0.866, 0.5, -0.5 )
-
 [node name="Spatial" type="Spatial"]
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
@@ -57,4 +55,4 @@ material/0 = SubResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody"]
 visible = false
-shape = SubResource( 4 )
+shape = ExtResource( 3 )
