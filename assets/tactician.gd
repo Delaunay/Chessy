@@ -48,6 +48,7 @@ func _ready():
 	cell_size = grid_map.cell_size
 	
 	add_units()
+	$HUD/UnitInfo.visible = false
 
 
 func snap_to_grid(pos):
@@ -66,16 +67,16 @@ func snap_to_grid(pos):
 #	pass
 
 func display(obj = null):
-	var display_container = $HUD/ViewportContainer/Viewport/DisplayWorld/Container
+	var display_container = $HUD/UnitInfo/Preview/Viewport/DisplayWorld/Container
 	
 	for child in display_container.get_children():
 		display_container.remove_child(child)
 		
 	if obj:
 		display_container.add_child(obj)
-		$HUD/ViewportContainer.visible = true
+		$HUD/UnitInfo.visible = true
 	else:
-		$HUD/ViewportContainer.visible = false
+		$HUD/UnitInfo.visible = false
 
 
 func select_object(event, pos, collision):
