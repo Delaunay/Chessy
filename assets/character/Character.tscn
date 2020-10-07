@@ -18,9 +18,9 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
 billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 14
+frame = 7
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.736122, 0, 0.425, 0, 3.246, 0, -0.425, 0, 0.736122, 0, 0.00156164, 0 )
+transform = Transform( 0.736122, 0, 0.425, 0, 3.246, 0, -0.425, 0, 0.736122, 0, -0.0022299, 0 )
 shape = SubResource( 1 )

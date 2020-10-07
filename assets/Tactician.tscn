@@ -73,3 +73,5 @@ margin_bottom = 70.0
 icon = ExtResource( 4 )
 
 [node name="Units" type="Spatial" parent="."]
+
+[node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]
