@@ -12,6 +12,8 @@ __meta__ = {
 "_editor_description_": "Tactician holds the player state when playing in a turn based tactic / Combat game"
 }
 
+[node name="Draw" type="ImmediateGeometry" parent="."]
+
 [node name="Camera" parent="." instance=ExtResource( 1 )]
 
 [node name="Cursor" parent="." instance=ExtResource( 3 )]
@@ -73,5 +75,3 @@ margin_bottom = 70.0
 icon = ExtResource( 4 )
 
 [node name="Units" type="Spatial" parent="."]
-
-[node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]

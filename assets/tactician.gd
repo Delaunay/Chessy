@@ -6,6 +6,7 @@ var characters = {}
 var cell_size = null
 var selection = null
 var unit_selected = false
+var m = SpatialMaterial.new()
 
 onready var character_asset = preload("res://assets/character/Character.tscn")
 
@@ -47,6 +48,10 @@ func highlight_pos_circle(cell):
 func create_character(pos):
 	#  insert a new charater on the map
 	var map_pos = grid_map.world_to_map(pos)
+	if grid_map.get_cell_item(map_pos.x, map_pos.y, map_pos.z) == GridMap.INVALID_CELL_ITEM:
+		print("could not create character on ", map_pos, " x ", pos)
+		return
+		
 	var world_pos = grid_map.map_to_world(map_pos.x, map_pos.y, map_pos.z)
 	
 	var instance = character_asset.instance()
@@ -64,22 +69,31 @@ func create_character(pos):
 func add_units():
 	# TODO: move this when the grid map is loaded
 	var positions = [
-		Vector3(0, 0, 0),
-		Vector3(5, 0, 6),
-		Vector3(5, 0, 0)
+		Vector3( 0, 0,  0),
+		# --
+		Vector3( 6, 0,  0),
+		Vector3(-6, 0,  0),
+		Vector3( 0, 0,  6),
+		Vector3( 0, 0, -6),
+		# --
+		Vector3( 6, 0,  6),
+		Vector3(-6, 0,  6),
+		Vector3(-6, 0, -6),
+		Vector3( 6, 0, -6)
 	]
 	
-	var d = 0
 	for p in positions:
 		var cell = create_character(p)
-		d += 1
 		
-		if d == 1:
-			show_unit_range(cell, 2)
+	# var path = select_move_path(Vector3( 0, 0, 0), Vector3(2, 0, 2))
+	# draw_path(path)
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	m.flags_unshaded = true
+	m.flags_use_point_size = true
+	m.albedo_color = Color.white
 	var parent = get_parent()
 
 	if not parent is GridMap:
@@ -129,7 +143,8 @@ func select_object(event, pos, collision):
 		# TODO: move this logic into an editor plugin to place entities
 		# on the grid map
 		# create_character(pos)
-		
+		clear_highlighted_tiles()
+
 		if collision.collider is GridMap:
 			selection = null
 			unit_selected = false
@@ -139,13 +154,26 @@ func select_object(event, pos, collision):
 
 			if cell in characters:
 				unit_selected = true
+				show_unit_range(cell, 2)
 			else:
 				unit_selected = false
-				
+
+
 		display(obj)
 
 
+var highlighted_tiles = []
+
+
+func clear_highlighted_tiles():
+	for highlight in highlighted_tiles:
+		grid_map.set_cell_data(highlight.x, highlight.y, highlight.z, Color(0, 0, 0, 0))
+	highlighted_tiles = []
+
+
 func show_unit_range(cell, unit_range):
+	clear_highlighted_tiles()
+
 	# breadth-first search given our unit range
 	if grid_map.get_cell_item(cell.x, cell.y, cell.z) == GridMap.INVALID_CELL_ITEM:
 		return null
@@ -161,7 +189,7 @@ func show_unit_range(cell, unit_range):
 		for dir in base_axial_direction:
 			var highlight = null
 
-			for i in [-1, 0, 1]:
+			for i in [0, 1, -1]:
 				var neigh = c + dir + Vector3(0, i, 0)
 
 				if grid_map.get_cell_item(neigh.x, neigh.y, neigh.z) == GridMap.INVALID_CELL_ITEM:
@@ -172,14 +200,86 @@ func show_unit_range(cell, unit_range):
 				if d + 1 < unit_range:
 					pending.append([d + 1, highlight])
 				
+				highlighted_tiles.append(highlight)
 				grid_map.set_cell_data(highlight.x, highlight.y, highlight.z, Color(1, 0, 0, 0))
+				break
 	
 	return
 
 
 # TODO: move this to the GridMap Script
-func select_move_path():
-	pass
+func select_move_path(start, end):
+	# select_move_path(Vector3( 1, 0, 1), Vector3(0, 0, 0))
+	if start == end:
+		return []
+		
+	if grid_map.get_cell_item(start.x, start.y, start.z) == GridMap.INVALID_CELL_ITEM:
+		print("start ", start, " is not on the map")
+		return []
+		
+	if grid_map.get_cell_item(end.x, end.y, end.z) == GridMap.INVALID_CELL_ITEM:
+		print("end ", end, " is not on the map")
+		return []
+	
+	var frontier = []
+	frontier.append(start)
+	
+	var came_from = {}
+	came_from[start] = null
+
+	while len(frontier) != 0:
+		var current = frontier.pop_front()
+		
+		if current == end:
+			break
+
+		for dir in base_axial_direction:
+			for i in [0, 1, -1]:
+				var next = current + dir + Vector3(0, i, 0)
+				
+				if next in came_from:
+					continue
+				
+				if grid_map.get_cell_item(next.x, next.y, next.z) == GridMap.INVALID_CELL_ITEM:
+					continue
+				
+				frontier.append(next)
+				came_from[next] = current
+				break
+
+	# print(came_from)
+	var path = []
+	var current = end
+	
+	while current != start:
+		path.append(current)
+		current = came_from[current]
+	
+	path.append(start)
+	return path
+
+
+func draw_path(path):
+	if len(path) == 0:
+		return
+
+	var yoffset = Vector3(0, 0.10, 0)
+	# var s = path[0] + Vector3(0, 1, 0)
+	# var e = path[-1] + Vector3(0, 1, 0)
+	
+	var im = $Draw
+	im.set_material_override(m)
+	im.clear()
+	im.begin(Mesh.PRIMITIVE_POINTS, null)
+	# im.add_vertex(grid_map.map_to_world(s.x, s.y, s.z) + yoffset)
+	# im.add_vertex(grid_map.map_to_world(e.x, e.y, e.z) + yoffset)
+	im.end()
+	
+	im.begin(Mesh.PRIMITIVE_LINE_STRIP, null)
+	for n in path:
+		n.y += 1
+		im.add_vertex(grid_map.map_to_world(n.x, n.y, n.z))
+	im.end()
 
 
 func _input(event):
@@ -203,7 +303,6 @@ func _input(event):
 	if pos != null:
 		$Cursor.translate(pos - $Cursor.get_global_transform().origin)
 		select_object(event, pos, collision)
-
 		return true
 
 
