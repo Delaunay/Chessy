@@ -4,9 +4,9 @@ extends Spatial
 var grid_map: GridMap = null
 var characters = {}
 var cell_size = null
+var selection_cell = null
 var selection = null
 var unit_selected = false
-var m = SpatialMaterial.new()
 
 onready var character_asset = preload("res://assets/character/Character.tscn")
 
@@ -86,14 +86,11 @@ func add_units():
 		var cell = create_character(p)
 		
 	# var path = select_move_path(Vector3( 0, 0, 0), Vector3(2, 0, 2))
-	# draw_path(path)
+	# draw_path(select_move_path(Vector3( 0, 0, 0), Vector3(2, 0, 2)))
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	m.flags_unshaded = true
-	m.flags_use_point_size = true
-	m.albedo_color = Color.white
 	var parent = get_parent()
 
 	if not parent is GridMap:
@@ -154,9 +151,11 @@ func select_object(event, pos, collision):
 
 			if cell in characters:
 				unit_selected = true
+				selection_cell = cell
 				show_unit_range(cell, 2)
 			else:
 				unit_selected = false
+				selection_cell = null
 
 
 		display(obj)
@@ -268,7 +267,7 @@ func draw_path(path):
 	# var e = path[-1] + Vector3(0, 1, 0)
 	
 	var im = $Draw
-	im.set_material_override(m)
+
 	im.clear()
 	im.begin(Mesh.PRIMITIVE_POINTS, null)
 	# im.add_vertex(grid_map.map_to_world(s.x, s.y, s.z) + yoffset)
@@ -303,6 +302,9 @@ func _input(event):
 	if pos != null:
 		$Cursor.translate(pos - $Cursor.get_global_transform().origin)
 		select_object(event, pos, collision)
-		return true
+		
+		if selection != null:
+			var end = grid_map.world_to_map(pos)
+			draw_path(select_move_path(selection_cell, end))
 
 
