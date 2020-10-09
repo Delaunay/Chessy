@@ -145,6 +145,7 @@ func select_object(event, pos, collision):
 		if collision.collider is GridMap:
 			selection = null
 			unit_selected = false
+			$Draw.clear()
 		else:
 			selection = collision.collider
 			obj = character_asset.instance()
@@ -154,9 +155,9 @@ func select_object(event, pos, collision):
 				selection_cell = cell
 				show_unit_range(cell, 2)
 			else:
+				$Draw.clear()
 				unit_selected = false
 				selection_cell = null
-
 
 		display(obj)
 

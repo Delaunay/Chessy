@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/character/skeleton_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://assets/character/Chracter.gd" type="Script" id=2]
+[ext_resource path="res://assets/character/HealthBar.gd" type="Script" id=3]
 
 [sub_resource type="ConvexPolygonShape" id=1]
 points = PoolVector3Array( 0, 0, 0, 0, 0, -1, -0.866, 0, -0.5, -0.866, 0, 0.5, 0, 0, 1, 0.866, 0, 0.5, 0.866, 0, -0.5, 0, 0.5, 0, 0, 0.5, -1, -0.866, 0.5, -0.5, -0.866, 0.5, 0.5, 0, 0.5, 1, 0.866, 0.5, 0.5, 0.866, 0.5, -0.5 )
@@ -18,9 +19,27 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
 billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 7
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 0.736122, 0, 0.425, 0, 3.246, 0, -0.425, 0, 0.736122, 0, -0.0022299, 0 )
 shape = SubResource( 1 )
+
+[node name="HealthBar" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.67154, 0.740969, 0, -0.740969, 0.67154, 0, 1.6127, 0 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 200, 26 )
+script = ExtResource( 3 )
+
+[node name="Viewport" type="Viewport" parent="HealthBar"]
+size = Vector2( 200, 26 )
+transparent_bg = true
+usage = 0
+render_target_v_flip = true
+
+[node name="ProgressBar" type="ProgressBar" parent="HealthBar/Viewport"]
+margin_right = 200.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 200, 26 )
+value = 25.0
+percent_visible = false
