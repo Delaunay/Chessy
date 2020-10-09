@@ -19,7 +19,6 @@ var green = Color(0, 1, 0, 1)
 
 func color_gradient(val):
 	# create a color gradient red 0 50 -> yellow 50 -> green 50 - 100
-	var color = null
 	var v = float(val)
 	var top_color = yellow
 	var bot_color = red

@@ -38,7 +38,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -16, 191 )
+graph_offset = Vector2( -16, 110.75 )
 flags/unshaded = true
 nodes/fragment/0/position = Vector2( 880, 160 )
 nodes/fragment/2/node = SubResource( 1 )
@@ -53,9 +53,6 @@ script = ExtResource( 2 )
 __meta__ = {
 "_editor_description_": "Tactician holds the player state when playing in a turn based tactic / Combat game"
 }
-
-[node name="Draw" type="ImmediateGeometry" parent="."]
-material_override = SubResource( 3 )
 
 [node name="Camera" parent="." instance=ExtResource( 1 )]
 
@@ -118,3 +115,6 @@ margin_bottom = 70.0
 icon = ExtResource( 4 )
 
 [node name="Units" type="Spatial" parent="."]
+
+[node name="Draw" type="ImmediateGeometry" parent="."]
+material_override = SubResource( 3 )

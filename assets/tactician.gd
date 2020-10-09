@@ -9,6 +9,7 @@ var selection = null
 var unit_selected = false
 
 onready var character_asset = preload("res://assets/character/Character.tscn")
+onready var path_texture = preload("res://assets/ImageTexture.tres")
 
 var base_axial_direction = [
 	Vector3(+1, 0, 0), Vector3(+1, 0, -1), Vector3(0, 0, -1), 
@@ -145,7 +146,7 @@ func select_object(event, pos, collision):
 		if collision.collider is GridMap:
 			selection = null
 			unit_selected = false
-			$Draw.clear()
+			clear_path()
 		else:
 			selection = collision.collider
 			obj = character_asset.instance()
@@ -155,7 +156,7 @@ func select_object(event, pos, collision):
 				selection_cell = cell
 				show_unit_range(cell, 2)
 			else:
-				$Draw.clear()
+				clear_path()
 				unit_selected = false
 				selection_cell = null
 
@@ -259,26 +260,119 @@ func select_move_path(start, end):
 	return path
 
 
+func clear_path():
+	$Draw.clear()
+
+var center = null
+
+func sort_winding(a, b):
+	var a1 = fmod(rad2deg(atan2(a.x - center.x, a.z - center.z)) + 360.0, 360.0)
+	var a2 = fmod(rad2deg(atan2(b.x - center.x, b.z - center.z)) + 360.0, 360.0)
+	return a1 > a2
+
+
+func hex_mid(center, size, i):
+	if i == null:
+		return center
+
+	var angle_deg = 60 * i - 30
+	var angle_rad = PI / 180 * angle_deg
+	return Vector3(center.x + size * cos(angle_rad), center.y, center.z + size * sin(angle_rad))
+
+
+func draw_rectangle(im, points):
+	# because of winding order we need to sort our vertices
+	center = (points[0] + points[2]) / 2.0
+	points.sort_custom(self, "sort_winding")
+
+	im.add_vertex(points[0])
+	im.add_vertex(points[1])
+	im.add_vertex(points[2])
+	
+	im.add_vertex(points[0])
+	im.add_vertex(points[2])
+	im.add_vertex(points[3])
+
+
+var direction_mid = {
+	Vector3( 1, 0,  0): 0,
+	Vector3( 1, 0, -1): 1,
+	Vector3( 0, 0, -1): 2,
+	Vector3(-1, 0,  0): 3,
+	Vector3(-1, 0,  1): 4,
+	Vector3( 0, 0,  1): 5,
+}
+
+func angle(a, b):
+	print(a, b)
+	var dot = (a.x * b.x + a.z * b.z)
+	var aa = sqrt(a.x * a.x + a.z * a.z)
+	var bb = sqrt(b.x * b.x + b.z * b.z)
+	return rad2deg(acos(dot / (aa * bb)))
+
+
+
+
+
 func draw_path(path):
 	if len(path) == 0:
 		return
 
 	var yoffset = Vector3(0, 0.10, 0)
-	# var s = path[0] + Vector3(0, 1, 0)
-	# var e = path[-1] + Vector3(0, 1, 0)
-	
 	var im = $Draw
 
 	im.clear()
-	im.begin(Mesh.PRIMITIVE_POINTS, null)
-	# im.add_vertex(grid_map.map_to_world(s.x, s.y, s.z) + yoffset)
-	# im.add_vertex(grid_map.map_to_world(e.x, e.y, e.z) + yoffset)
-	im.end()
+	# im.begin(Mesh.PRIMITIVE_LINE_STRIP, null)
+	im.begin(Mesh.PRIMITIVE_TRIANGLES, null)
+
+	var i = 0
+	var prev
+	var prev_cell
+	var w = 0.5 / 2
+	var prev_vector = null
+	var offset = Vector3(w, 0, 0)
+	# 
+	# rotation.rotated(theta)
+	# var distance = sqrt(vector.x * vector.x + vector.y * vector.y)
+
+	# var xp = distance * cos(angle)
+	# var yp =     0.25 * sin(angle)
+
+	# var rectangle = [
+	# 	Vector3(      0, 0,       0) + prev - width,
+	# 	Vector3(xp     , 0,       0) + prev - width,
+	# 	Vector3(xp - yp, 0, xp + yp) + prev - width,
+	# 	Vector3( 0 - yp, 0,      yp) + prev - width,
+	# ]
 	
-	im.begin(Mesh.PRIMITIVE_LINE_STRIP, null)
-	for n in path:
-		n.y += 1
-		im.add_vertex(grid_map.map_to_world(n.x, n.y, n.z))
+	var p1
+	var p2
+
+	for k in range(len(path)):
+		var n = path[k] + Vector3(0, 1, 0)
+		var next = grid_map.map_to_world(n.x, n.y, n.z) + Vector3(0, 0.10, 0)
+		
+		if prev == null:
+			p1 = next - offset
+			p2 = next + offset
+		else:
+			var vector = next - prev
+			var angle = atan2(vector.z, vector.x)
+
+			# print(rad2deg(angle))
+			# if abs(rad2deg(angle) / 30.0) - 1 < 0.01 or abs(rad2deg(angle) / 150.0) - 1 < 0.01:
+			#	offset = Vector3(0, 0, w)
+			#else:
+			#	offset = Vector3(0, 0, w)
+
+			var rectangle = [p1, p2, next + offset, next - offset]
+			draw_rectangle(im, rectangle)
+			p1 = next - offset
+			p2 = next + offset
+		
+
+		prev = next
+
 	im.end()
 
 
