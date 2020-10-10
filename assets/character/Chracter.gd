@@ -9,6 +9,14 @@ const MAX_SLOPE_ANGLE = 30
 onready var gravity = -ProjectSettings.get_setting("physics/3d/default_gravity")
 var velocity: Vector3
 
+var stamina  = 100 
+var strength  = 10
+var agility   = 10
+var intellect = 10
+var vitality = 100
+var crit = 0
+var armor = 0
+
 
 func display(_viewport, _camera):
 	pass
@@ -19,6 +27,7 @@ func display(_viewport, _camera):
 	
 func _ready():
 	$Sprite3D.play("idle")
+	$HealthBar.set_value(vitality)
 
 
 func moving():

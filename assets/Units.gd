@@ -33,16 +33,23 @@ func add_units():
 		var _cell = create_character(p)
 		
 
-func create_character(pos):
+func create_character(pos, kind=0):
 	#  insert a new charater on the map
 	var map_pos = grid_map.world_to_map(pos)
+
 	if grid_map.get_cell_item(map_pos.x, map_pos.y, map_pos.z) == GridMap.INVALID_CELL_ITEM:
 		print("could not create character on ", map_pos, " x ", pos)
 		return
 		
 	var world_pos = grid_map.map_to_world(map_pos.x, map_pos.y, map_pos.z)
 	
-	var instance = character_asset.instance()
+	var instance = null
+
+	if kind == 0:
+		instance = character_asset.instance()
+	else:
+		instance = character_asset.instance()
+	
 	characters[map_pos] = instance
 	
 	add_child(instance)
@@ -71,13 +78,13 @@ func _process(delta):
 		if len(path) > m[2] + 1:
 			new_moving.append([unit, path, m[2] + 1])
 		else:
-			characters[p] = unit
 			unit.idle()
-
 
 	moving = new_moving
 
 
 func move(unit, path):
+	# this makes the unit non selectable as long as it is moving
 	characters.erase(path[0])
+	characters[path[-1]] = unit
 	moving.append([unit, path, 1])
