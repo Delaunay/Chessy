@@ -8,6 +8,7 @@ var base_axial_direction = [
 ]
 var axial_direction = neigboors()
 
+
 func neigboors():
 	# generates list of immediate neighboors
 	var neighs = []
@@ -182,6 +183,7 @@ func show_unit_range(cell, unit_range):
 				break
 	
 	return
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

@@ -5,6 +5,8 @@ var grid_map = null
 var display_container = null
 var unit_info = null
 var characters = {}
+var moving = []
+
 
 func __init__(map):
 	grid_map = map
@@ -55,6 +57,27 @@ func _ready():
 	pass # Replace with function body.
 
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	var new_moving = []
+
+	for m in moving:
+		var unit = m[0]
+		var path = m[1]
+		var p = path[m[2]]
+		unit.move_now(grid_map.map_to_world(p.x, p.y + 1, p.z))
+
+		if len(path) > m[2] + 1:
+			new_moving.append([unit, path, m[2] + 1])
+		else:
+			characters[p] = unit
+			unit.idle()
+
+
+	moving = new_moving
+
+
+func move(unit, path):
+	characters.erase(path[0])
+	moving.append([unit, path, 1])

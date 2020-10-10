@@ -21,9 +21,19 @@ func _ready():
 	$Sprite3D.play("idle")
 
 
-func _physics_process(delta):
-	var dir = Vector3(0, -1, 0)
-	
+func moving():
+	$Sprite3D.play("walking")
+
+
+func idle():
+	$Sprite3D.play("idle")
+
+
+func move_now(cell):
+	translate(cell - get_global_transform().origin)
+
+
+func move(delta, dir):
 	# Get the camera's transform basis, but remove the X rotation such
 	# that the Y axis is up and Z is horizontal.
 	# var cam_basis = $Camera.global_transform.basis
@@ -57,3 +67,6 @@ func _physics_process(delta):
 	velocity.y = hvel.y
 	velocity = move_and_slide(velocity, Vector3.UP)
 
+
+func _physics_process(delta):
+	move(delta, Vector3(0, -1, 0))

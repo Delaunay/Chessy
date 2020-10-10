@@ -41,7 +41,11 @@ func select_object(event, pos, collision):
 		grid_map.clear_highlighted_tiles()
 
 		if collision.collider is GridMap:
-			selection = null
+			if selection != null:
+				var path = grid_map.select_move_path(selection.cell, cell)
+				$Units.move(selection.unit, path)
+				selection = null
+				
 			clear_path()
 		else:
 			obj = $Units.character_asset.instance()
