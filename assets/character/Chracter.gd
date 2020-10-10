@@ -10,13 +10,16 @@ onready var gravity = -ProjectSettings.get_setting("physics/3d/default_gravity")
 var velocity: Vector3
 
 
-func display(viewport, camera):
+func display(_viewport, _camera):
 	pass
 	# viewport = self
 	# viewport.add_child(self)
 	# camera.set_transform(self.get_transform())
 	# camera.translate(Vector3(1, 0, 1))
 	
+func _ready():
+	$Sprite3D.play("idle")
+
 
 func _physics_process(delta):
 	var dir = Vector3(0, -1, 0)

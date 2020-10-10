@@ -19,5 +19,4 @@ animations = [ {
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.433013, 0.25, -4.07302e-08, 0, -8.14603e-08, -0.5, -0.25, 0.433013, -7.05467e-08, 0, 0, 0 )
 frames = SubResource( 3 )
-frame = 1
 playing = true

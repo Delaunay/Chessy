@@ -2,13 +2,11 @@ extends Spatial
 
 
 var grid_map: GridMap = null
-var characters = {}
 var cell_size = null
 var selection_cell = null
 var selection = null
 var unit_selected = false
 
-onready var character_asset = preload("res://assets/character/Character.tscn")
 onready var path_texture = preload("res://assets/ImageTexture.tres")
 
 var base_axial_direction = [
@@ -24,7 +22,7 @@ func neigboors():
 	for dir in base_axial_direction:
 		for i in [1, 0, -1]:
 			neighs.append(dir + Vector3(0, i, 0))
-			
+	
 	return neighs
 
 
@@ -46,50 +44,6 @@ func highlight_pos_circle(cell):
 			break
 
 
-func create_character(pos):
-	#  insert a new charater on the map
-	var map_pos = grid_map.world_to_map(pos)
-	if grid_map.get_cell_item(map_pos.x, map_pos.y, map_pos.z) == GridMap.INVALID_CELL_ITEM:
-		print("could not create character on ", map_pos, " x ", pos)
-		return
-		
-	var world_pos = grid_map.map_to_world(map_pos.x, map_pos.y, map_pos.z)
-	
-	var instance = character_asset.instance()
-	characters[map_pos] = instance
-	
-	$Units.add_child(instance)
-	var translate = world_pos + Vector3(0, grid_map.get_cell_size().y, 0)
-	instance.translate(translate / instance.scale)
-
-	# highlight_pos_circle(map_pos)
-	print("pos", pos)
-	return map_pos
-
-
-func add_units():
-	# TODO: move this when the grid map is loaded
-	var positions = [
-		Vector3( 0, 0,  0),
-		# --
-		Vector3( 6, 0,  0),
-		Vector3(-6, 0,  0),
-		Vector3( 0, 0,  6),
-		Vector3( 0, 0, -6),
-		# --
-		Vector3( 6, 0,  6),
-		Vector3(-6, 0,  6),
-		Vector3(-6, 0, -6),
-		Vector3( 6, 0, -6)
-	]
-	
-	for p in positions:
-		var cell = create_character(p)
-		
-	# var path = select_move_path(Vector3( 0, 0, 0), Vector3(2, 0, 2))
-	# draw_path(select_move_path(Vector3( 0, 0, 0), Vector3(2, 0, 2)))
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var parent = get_parent()
@@ -99,38 +53,7 @@ func _ready():
 
 	grid_map = parent
 	cell_size = grid_map.cell_size
-	
-	add_units()
-	$HUD/UnitInfo.visible = false
-
-
-func snap_to_grid(pos, offset=1):
-	var cell = grid_map.world_to_map(pos)
-	cell.y -= offset
-
-	# make sure that a cell exist under the map position
-	if grid_map.get_cell_item(cell.x, cell.y, cell.z) == GridMap.INVALID_CELL_ITEM:
-		return null
-
-	return grid_map.map_to_world(cell.x, cell.y, cell.z)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-func display(obj = null):
-	# TODO move this to the UnitInfo script
-	var display_container = $HUD/UnitInfo/VBoxContainer/Preview/Viewport/DisplayWorld/Container
-
-	for child in display_container.get_children():
-		display_container.remove_child(child)
-		
-	if obj:
-		display_container.add_child(obj)
-		$HUD/UnitInfo.visible = true
-	else:
-		$HUD/UnitInfo.visible = false
+	$Units.__init__(grid_map)
 
 
 func select_object(event, pos, collision):
@@ -149,9 +72,9 @@ func select_object(event, pos, collision):
 			clear_path()
 		else:
 			selection = collision.collider
-			obj = character_asset.instance()
+			obj = $Units.character_asset.instance()
 
-			if cell in characters:
+			if cell in $Units.characters:
 				unit_selected = true
 				selection_cell = cell
 				show_unit_range(cell, 2)
@@ -160,7 +83,7 @@ func select_object(event, pos, collision):
 				unit_selected = false
 				selection_cell = null
 
-		display(obj)
+		$HUD/UnitInfo.display(obj)
 
 
 var highlighted_tiles = []
@@ -257,123 +180,16 @@ func select_move_path(start, end):
 		current = came_from[current]
 	
 	path.append(start)
+	path.invert()
 	return path
 
 
-func clear_path():
-	$Draw.clear()
-
-var center = null
-
-func sort_winding(a, b):
-	var a1 = fmod(rad2deg(atan2(a.x - center.x, a.z - center.z)) + 360.0, 360.0)
-	var a2 = fmod(rad2deg(atan2(b.x - center.x, b.z - center.z)) + 360.0, 360.0)
-	return a1 > a2
-
-
-func hex_mid(center, size, i):
-	if i == null:
-		return center
-
-	var angle_deg = 60 * i - 30
-	var angle_rad = PI / 180 * angle_deg
-	return Vector3(center.x + size * cos(angle_rad), center.y, center.z + size * sin(angle_rad))
-
-
-func draw_rectangle(im, points):
-	# because of winding order we need to sort our vertices
-	center = (points[0] + points[2]) / 2.0
-	points.sort_custom(self, "sort_winding")
-
-	im.add_vertex(points[0])
-	im.add_vertex(points[1])
-	im.add_vertex(points[2])
-	
-	im.add_vertex(points[0])
-	im.add_vertex(points[2])
-	im.add_vertex(points[3])
-
-
-var direction_mid = {
-	Vector3( 1, 0,  0): 0,
-	Vector3( 1, 0, -1): 1,
-	Vector3( 0, 0, -1): 2,
-	Vector3(-1, 0,  0): 3,
-	Vector3(-1, 0,  1): 4,
-	Vector3( 0, 0,  1): 5,
-}
-
-func angle(a, b):
-	print(a, b)
-	var dot = (a.x * b.x + a.z * b.z)
-	var aa = sqrt(a.x * a.x + a.z * a.z)
-	var bb = sqrt(b.x * b.x + b.z * b.z)
-	return rad2deg(acos(dot / (aa * bb)))
-
-
-
-
-
 func draw_path(path):
-	if len(path) == 0:
-		return
+	$PathPreview.show_path(path, grid_map)
 
-	var yoffset = Vector3(0, 0.10, 0)
-	var im = $Draw
 
-	im.clear()
-	# im.begin(Mesh.PRIMITIVE_LINE_STRIP, null)
-	im.begin(Mesh.PRIMITIVE_TRIANGLES, null)
-
-	var i = 0
-	var prev
-	var prev_cell
-	var w = 0.5 / 2
-	var prev_vector = null
-	var offset = Vector3(w, 0, 0)
-	# 
-	# rotation.rotated(theta)
-	# var distance = sqrt(vector.x * vector.x + vector.y * vector.y)
-
-	# var xp = distance * cos(angle)
-	# var yp =     0.25 * sin(angle)
-
-	# var rectangle = [
-	# 	Vector3(      0, 0,       0) + prev - width,
-	# 	Vector3(xp     , 0,       0) + prev - width,
-	# 	Vector3(xp - yp, 0, xp + yp) + prev - width,
-	# 	Vector3( 0 - yp, 0,      yp) + prev - width,
-	# ]
-	
-	var p1
-	var p2
-
-	for k in range(len(path)):
-		var n = path[k] + Vector3(0, 1, 0)
-		var next = grid_map.map_to_world(n.x, n.y, n.z) + Vector3(0, 0.10, 0)
-		
-		if prev == null:
-			p1 = next - offset
-			p2 = next + offset
-		else:
-			var vector = next - prev
-			var angle = atan2(vector.z, vector.x)
-
-			# print(rad2deg(angle))
-			# if abs(rad2deg(angle) / 30.0) - 1 < 0.01 or abs(rad2deg(angle) / 150.0) - 1 < 0.01:
-			#	offset = Vector3(0, 0, w)
-			#else:
-			#	offset = Vector3(0, 0, w)
-
-			var rectangle = [p1, p2, next + offset, next - offset]
-			draw_rectangle(im, rectangle)
-			p1 = next - offset
-			p2 = next + offset
-		
-
-		prev = next
-
-	im.end()
+func clear_path():
+	$PathPreview.clear()
 
 
 func _input(event):
@@ -392,7 +208,7 @@ func _input(event):
 			# our grid system so we know that this will get us a tile
 			pos = collision.collider.get_global_transform().origin
 
-		pos = snap_to_grid(pos)
+		pos = grid_map.snap_to_grid(pos)
 
 	if pos != null:
 		$Cursor.translate(pos - $Cursor.get_global_transform().origin)

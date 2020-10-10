@@ -1,0 +1,15 @@
+[gd_resource type="AnimatedTexture" load_steps=3 format=2]
+
+[ext_resource path="res://assets/tile/path/left-right.png" type="Texture" id=2]
+
+[sub_resource type="StreamTexture" id=1]
+flags = 7
+load_path = "res://.import/left-bot.png-c843101802e2d98b03013e34dd071cb5.s3tc.stex"
+
+[resource]
+flags = 7
+frames = 2
+fps = 0.0
+frame_0/texture = SubResource( 1 )
+frame_1/texture = ExtResource( 2 )
+frame_1/delay_sec = 0.0

@@ -12,6 +12,16 @@ func _ready():
 	pass # Replace with function body.
 
 
+func snap_to_grid(pos, offset=1):
+	var cell = world_to_map(pos)
+	cell.y -= offset
+
+	# make sure that a cell exist under the map position
+	if get_cell_item(cell.x, cell.y, cell.z) == GridMap.INVALID_CELL_ITEM:
+		return null
+
+	return map_to_world(cell.x, cell.y, cell.z)
+
 
 func square_map(radius, rot=22):
 	for i in range(radius):

@@ -9,7 +9,7 @@ extends Sprite3D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	texture = $Viewport.get_texture()
-	set_value(75)
+	set_value(25)
 
 
 var red = Color(1, 0, 0, 1)
