@@ -95,10 +95,11 @@ func select_move_path(start, end):
 	frontier.append(start)
 	
 	var came_from = {}
+	var current = null
 	came_from[start] = null
 
 	while len(frontier) != 0:
-		var current = frontier.pop_front()
+		current = frontier.pop_front()
 		
 		if current == end:
 			break
@@ -112,6 +113,12 @@ func select_move_path(start, end):
 				
 				if get_cell_item(next.x, next.y, next.z) == GridMap.INVALID_CELL_ITEM:
 					continue
+					
+				if next in $GameMode.unit_positions:
+					if next == end:
+						return []
+
+					continue
 				
 				frontier.append(next)
 				came_from[next] = current
@@ -119,7 +126,6 @@ func select_move_path(start, end):
 
 	# print(came_from)
 	var path = []
-	var current = end
 	
 	while current != start:
 		path.append(current)

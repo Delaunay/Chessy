@@ -33,7 +33,8 @@ func display(_viewport, _camera):
 	
 func _ready():
 	$Sprite3D.play("idle")
-	$HealthBar.set_value(vitality)
+	$StatusBar.set_health(vitality)
+	$StatusBar.set_stamina(stamina)
 
 
 func moving():

@@ -15,6 +15,7 @@ enum {
 	END
 }
 
+
 export var show_start = false
 export var show_end = false
 var used = []
@@ -47,13 +48,16 @@ var dir2angle = {
 	Vector3(-1, 0,  0): -60
 }
 
+
 var turn2angle = {
-	Vector3(1, 0, -2) : 180,
-	Vector3(-1, 0, -1): 60,
-	Vector3(1, 0, 1)  : 60,
-	Vector3(-2, 0, 1)  : -60,
-	Vector3(2, 0, -1)  : 120,
+	Vector3( 1, 0, 0): 180,
+	Vector3(-1, 0, 0): 0,
+	Vector3(-1, 0, 1): 60,
+	Vector3(1, 0, -1): -120,
+	Vector3(0, 0, -1): -60,
+	Vector3(0, 0,  1): 120,
 }
+
 
 func compute_angle(a, b):
 	var dot = (a.x * b.x + a.z * b.z)
@@ -94,10 +98,10 @@ func show_path(path, grid_map):
 		var n = path[k + 1]
 		
 		var v1 = p - c
-		var v2 = n - c
+		var v2 = c - n
 		
 		var turn_angle = compute_angle(v1, v2)
-		var is_turning = (abs(abs(turn_angle / 180.0) - 1.0)) > 0.01
+		var is_turning = abs(turn_angle) > 0.01
 	
 		if is_turning:
 			kind = TURN
