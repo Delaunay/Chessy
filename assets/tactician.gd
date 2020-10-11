@@ -70,6 +70,7 @@ func select_object(event, pos, collision):
 			clear_path()
 		else:
 			obj = mode.character_asset.instance()
+			obj.hide_status()
 
 			if cell in mode.unit_positions:
 				selection = new_selection(cell, pos, collision.collider)

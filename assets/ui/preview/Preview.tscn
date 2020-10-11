@@ -72,9 +72,8 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 117.0
 margin_right = 1004.0
-margin_bottom = 131.0
+margin_bottom = 14.0
 size_flags_vertical = 1
 text = "Unit Info"
 align = 1
@@ -83,19 +82,19 @@ __meta__ = {
 }
 
 [node name="Preview" type="ViewportContainer" parent="VBoxContainer"]
-margin_left = 374.0
-margin_top = 135.0
-margin_right = 630.0
-margin_bottom = 391.0
-rect_min_size = Vector2( 150, 150 )
-size_flags_horizontal = 4
-size_flags_vertical = 5
+margin_top = 18.0
+margin_right = 1004.0
+margin_bottom = 508.0
+rect_min_size = Vector2( 256, 256 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Viewport" type="Viewport" parent="VBoxContainer/Preview"]
-size = Vector2( 256, 256 )
+size = Vector2( 1004, 490 )
 own_world = true
 handle_input_locally = false
 hdr = false
@@ -105,9 +104,9 @@ gui_disable_input = true
 [node name="DisplayWorld" parent="VBoxContainer/Preview/Viewport" instance=ExtResource( 1 )]
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
-margin_top = 395.0
+margin_top = 512.0
 margin_right = 1004.0
-margin_bottom = 409.0
+margin_bottom = 526.0
 text = "Unit Info"
 align = 1
 __meta__ = {
@@ -115,9 +114,9 @@ __meta__ = {
 }
 
 [node name="Label3" type="Label" parent="VBoxContainer"]
-margin_top = 413.0
+margin_top = 530.0
 margin_right = 1004.0
-margin_bottom = 427.0
+margin_bottom = 544.0
 text = "Unit Info"
 align = 1
 __meta__ = {
@@ -125,9 +124,9 @@ __meta__ = {
 }
 
 [node name="Label4" type="Label" parent="VBoxContainer"]
-margin_top = 431.0
+margin_top = 548.0
 margin_right = 1004.0
-margin_bottom = 445.0
+margin_bottom = 562.0
 text = "Unit Info"
 align = 1
 __meta__ = {
@@ -135,9 +134,9 @@ __meta__ = {
 }
 
 [node name="Label5" type="Label" parent="VBoxContainer"]
-margin_top = 449.0
+margin_top = 566.0
 margin_right = 1004.0
-margin_bottom = 463.0
+margin_bottom = 580.0
 text = "Unit Info"
 align = 1
 __meta__ = {

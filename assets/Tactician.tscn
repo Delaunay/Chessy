@@ -20,23 +20,20 @@ __meta__ = {
 [node name="HUD" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 100.0
-margin_top = 50.0
-margin_right = -100.0
-margin_bottom = -50.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="UnitInfo" parent="HUD" instance=ExtResource( 5 )]
-anchor_left = 0.041
-anchor_top = 0.072
-anchor_right = 0.201
-anchor_bottom = 0.072
-margin_left = 0.216
-margin_top = -3.8147e-06
-margin_right = 0.375992
-margin_bottom = 332.0
+anchor_top = 0.196
+anchor_right = 0.25
+anchor_bottom = 0.804
+margin_left = 0.0
+margin_top = -0.100006
+margin_right = 0.0
+margin_bottom = 0.0999756
+rect_min_size = Vector2( 256, 256 )
+rect_pivot_offset = Vector2( 119.556, 186.092 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
 anchor_top = 1.0
@@ -50,26 +47,26 @@ __meta__ = {
 }
 
 [node name="Button" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 254.0
-margin_right = 330.0
+margin_left = 354.0
+margin_right = 430.0
 margin_bottom = 70.0
 icon = ExtResource( 4 )
 
 [node name="Button2" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 334.0
-margin_right = 410.0
+margin_left = 434.0
+margin_right = 510.0
 margin_bottom = 70.0
 icon = ExtResource( 4 )
 
 [node name="Button3" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 414.0
-margin_right = 490.0
+margin_left = 514.0
+margin_right = 590.0
 margin_bottom = 70.0
 icon = ExtResource( 4 )
 
 [node name="Button4" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 494.0
-margin_right = 570.0
+margin_left = 594.0
+margin_right = 670.0
 margin_bottom = 70.0
 icon = ExtResource( 4 )
 

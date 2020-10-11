@@ -45,6 +45,10 @@ func idle():
 	$Sprite3D.play("idle")
 
 
+func hide_status():
+	$StatusBar.visible = false
+
+
 func move_now(cell):
 	translate(cell - get_global_transform().origin)
 
