@@ -9,6 +9,10 @@ const MAX_SLOPE_ANGLE = 30
 onready var gravity = -ProjectSettings.get_setting("physics/3d/default_gravity")
 var velocity: Vector3
 
+var cell = null
+var faction = 'X'
+var index = -1
+
 var stamina  = 100 
 var strength  = 10
 var agility   = 10
@@ -16,6 +20,8 @@ var intellect = 10
 var vitality = 100
 var crit = 0
 var armor = 0
+
+var abilities = []
 
 
 func display(_viewport, _camera):

@@ -3,12 +3,21 @@ extends Spatial
 
 var grid_map: GridMap = null
 var selection = null
+var faction = null
+var mode = null
 
 
 class Selection:
 	var cell
 	var world
 	var unit
+
+
+func __init__(faction_, map, mode_):
+	faction = faction_
+	grid_map = map
+	mode = mode_
+	add_units()
 
 
 func new_selection(cell, world, unit):
@@ -18,16 +27,28 @@ func new_selection(cell, world, unit):
 	s.unit = unit
 	return s
 
+func new_unit(kind, pos):
+	mode.new_unit_world(kind, faction, pos)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	var parent = get_parent()
 
-	if not parent is GridMap:
-		print('Error! tactician needs to be a child of GridMap')
-
-	grid_map = parent
-	$Units.__init__(grid_map)
+func add_units():
+	# TODO: move this when the grid map is loaded
+	var positions = [
+		Vector3( 0, 0,  0),
+		# --
+		Vector3( 6, 0,  0),
+		Vector3(-6, 0,  0),
+		Vector3( 0, 0,  6),
+		Vector3( 0, 0, -6),
+		# --
+		Vector3( 6, 0,  6),
+		Vector3(-6, 0,  6),
+		Vector3(-6, 0, -6),
+		Vector3( 6, 0, -6)
+	]
+	
+	for p in positions:
+		var _cell = new_unit(1, p)
 
 
 func select_object(event, pos, collision):
@@ -43,14 +64,14 @@ func select_object(event, pos, collision):
 		if collision.collider is GridMap:
 			if selection != null:
 				var path = grid_map.select_move_path(selection.cell, cell)
-				$Units.move(selection.unit, path)
+				mode.move(selection.unit, path)
 				selection = null
 				
 			clear_path()
 		else:
-			obj = $Units.character_asset.instance()
+			obj = mode.character_asset.instance()
 
-			if cell in $Units.characters:
+			if cell in mode.unit_positions:
 				selection = new_selection(cell, pos, collision.collider)
 				grid_map.show_unit_range(cell, 2)
 			else:

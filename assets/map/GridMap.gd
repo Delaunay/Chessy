@@ -23,7 +23,9 @@ func neigboors():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	load_map()
-	pass # Replace with function body.
+	$GameMode.__init__(self)
+	$GameMode.new_faction('X')
+	$Tactician.__init__('X', self, $GameMode)
 
 
 func snap_to_grid(pos, offset=1):

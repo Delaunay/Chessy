@@ -35,8 +35,8 @@ func color_gradient(val):
 
 
 func set_value(val):
-	$Viewport/ProgressBar.value = val
-	modulate = color_gradient(val)
+	$Viewport/HealthBar/ProgressBar.value = val
+	$Viewport/HealthBar/ProgressBar.modulate = color_gradient(val)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
