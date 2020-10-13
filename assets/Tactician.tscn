@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/cameras/TopDownCamera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/tactician.gd" type="Script" id=2]
 [ext_resource path="res://assets/tile/SelectionTile.tscn" type="PackedScene" id=3]
-[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://assets/abilities/Attack.png" type="Texture" id=4]
 [ext_resource path="res://assets/ui/preview/Preview.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/tile/path/PathPreview.tscn" type="PackedScene" id=6]
+[ext_resource path="res://icon.png" type="Texture" id=7]
 
 [node name="Tactician" type="Spatial"]
 script = ExtResource( 2 )
@@ -35,39 +36,148 @@ margin_bottom = 0.0999756
 rect_min_size = Vector2( 256, 256 )
 rect_pivot_offset = Vector2( 119.556, 186.092 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
-anchor_top = 1.0
+[node name="TextureRect" type="TextureRect" parent="HUD"]
+modulate = Color( 0.0196078, 0.0196078, 0.0196078, 0.47451 )
+anchor_top = 0.893
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -70.0
-mouse_filter = 0
+margin_top = 0.199951
+rect_min_size = Vector2( 64, 64 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TextureRect"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -512.0
+margin_top = -64.0
+margin_right = 512.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 354.0
-margin_right = 430.0
-margin_bottom = 70.0
-icon = ExtResource( 4 )
+[node name="A1" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+margin_left = 208.0
+margin_right = 272.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 4 )
+texture_hover = ExtResource( 4 )
+texture_focused = ExtResource( 4 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Button2" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 434.0
-margin_right = 510.0
-margin_bottom = 70.0
-icon = ExtResource( 4 )
+[node name="A2" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 0, 0, 0, 0.490196 )
+self_modulate = Color( 0, 0, 0, 0.45098 )
+margin_left = 276.0
+margin_right = 340.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
 
-[node name="Button3" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 514.0
-margin_right = 590.0
-margin_bottom = 70.0
-icon = ExtResource( 4 )
+[node name="A3" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 0, 0, 0, 0.490196 )
+self_modulate = Color( 0, 0, 0, 0.45098 )
+margin_left = 344.0
+margin_right = 408.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
 
-[node name="Button4" type="Button" parent="HUD/HBoxContainer"]
-margin_left = 594.0
-margin_right = 670.0
-margin_bottom = 70.0
-icon = ExtResource( 4 )
+[node name="A4" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 0, 0, 0, 0.490196 )
+self_modulate = Color( 0, 0, 0, 0.45098 )
+margin_left = 412.0
+margin_right = 476.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+
+[node name="A5" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 0, 0, 0, 0.490196 )
+self_modulate = Color( 0, 0, 0, 0.45098 )
+margin_left = 480.0
+margin_right = 544.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+
+[node name="A6" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 0, 0, 0, 0.490196 )
+self_modulate = Color( 0, 0, 0, 0.45098 )
+margin_left = 548.0
+margin_right = 612.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+
+[node name="A7" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 0, 0, 0, 0.490196 )
+self_modulate = Color( 0, 0, 0, 0.45098 )
+margin_left = 616.0
+margin_right = 680.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+
+[node name="A8" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 0, 0, 0, 0.490196 )
+self_modulate = Color( 0, 0, 0, 0.45098 )
+margin_left = 684.0
+margin_right = 748.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
+
+[node name="A9" type="TextureButton" parent="HUD/TextureRect/HBoxContainer" groups=[
+"Abilities",
+]]
+modulate = Color( 1, 1, 1, 0.490196 )
+self_modulate = Color( 1, 1, 1, 0.45098 )
+margin_left = 752.0
+margin_right = 816.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 5
 
 [node name="PathPreview" parent="." instance=ExtResource( 6 )]

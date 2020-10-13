@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/character/skeleton_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://assets/character/Chracter.gd" type="Script" id=2]
 [ext_resource path="res://assets/character/StatusBar.gd" type="Script" id=3]
-[ext_resource path="res://assets/character/StatusBar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://assets/character/ActionBar.gd" type="Script" id=5]
+[ext_resource path="res://assets/character/StatusBar.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ConvexPolygonShape" id=1]
 points = PoolVector3Array( 0, 0, 0, 0, 0, -1, -0.866, 0, -0.5, -0.866, 0, 0.5, 0, 0, 1, 0.866, 0, 0.5, 0.866, 0, -0.5, 0, 0.5, 0, 0, 0.5, -1, -0.866, 0.5, -0.5, -0.866, 0.5, 0.5, 0, 0.5, 1, 0.866, 0.5, 0.5, 0.866, 0.5, -0.5 )
@@ -20,7 +22,7 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
 billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 2
+frame = 9
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -28,7 +30,8 @@ transform = Transform( 0.736122, 0, 0.425, 0, 1.8364, 0, -0.425, 0, 0.736122, 0,
 shape = SubResource( 1 )
 
 [node name="StatusBar" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.67154, 0.740969, 0, -0.740969, 0.67154, 0, 1.6127, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.64, 0 )
+billboard = 1
 region_rect = Rect2( 0, 0, 100, 26 )
 script = ExtResource( 3 )
 
@@ -38,4 +41,24 @@ transparent_bg = true
 usage = 0
 render_target_v_flip = true
 
-[node name="StatusBar" parent="StatusBar/Viewport" instance=ExtResource( 4 )]
+[node name="StatusBar" parent="StatusBar/Viewport" instance=ExtResource( 6 )]
+
+[node name="ActionBar" type="Sprite3D" parent="."]
+billboard = 1
+script = ExtResource( 5 )
+
+[node name="Viewport" type="Viewport" parent="ActionBar"]
+size = Vector2( 100, 52 )
+transparent_bg = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ActionBar/Viewport"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="TextureButton" type="TextureButton" parent="ActionBar/Viewport/HBoxContainer"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+texture_normal = ExtResource( 4 )
+expand = true
+stretch_mode = 5

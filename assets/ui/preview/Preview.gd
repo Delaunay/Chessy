@@ -9,7 +9,6 @@ var display_container = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	visible = false
-	# display_container = $VBoxContainer/CenterContainer/Preview/Viewport/DisplayWorld/Container
 	display_container = $VBoxContainer/Preview/Viewport/DisplayWorld/Container
 	
 

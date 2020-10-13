@@ -162,10 +162,12 @@ func show_unit_range(cell, unit_range):
 
 	# breadth-first search given our unit range
 	if get_cell_item(cell.x, cell.y, cell.z) == GridMap.INVALID_CELL_ITEM:
-		return null
+		return []
 
 	# we keep the depth because tile types will influence the range
 	var pending = [[0, cell]]
+	var valid_cells = {}
+	
 	while len(pending) > 0:
 		var data = pending.pop_front()
 
@@ -180,6 +182,9 @@ func show_unit_range(cell, unit_range):
 
 				if get_cell_item(neigh.x, neigh.y, neigh.z) == GridMap.INVALID_CELL_ITEM:
 					continue
+					
+				if neigh in $GameMode.unit_positions:
+					continue
 				
 				highlight = neigh
 
@@ -188,9 +193,10 @@ func show_unit_range(cell, unit_range):
 				
 				highlighted_tiles.append(highlight)
 				set_cell_data(highlight.x, highlight.y, highlight.z, Color(1, 0, 0, 0))
+				valid_cells[highlight] = true
 				break
 	
-	return
+	return valid_cells
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -20,9 +20,10 @@ var intellect = 10
 var vitality = 100
 var crit = 0
 var armor = 0
+var unit_range = 4
 
 var abilities = []
-
+var go_to_idle = false
 
 func display(_viewport, _camera):
 	pass
@@ -36,17 +37,35 @@ func _ready():
 	$StatusBar.set_health(vitality)
 	$StatusBar.set_stamina(stamina)
 
+func update_health(value):
+	vitality += value
+	$StatusBar.set_health(vitality)
 
 func moving():
 	$Sprite3D.play("walking")
 
+func attack():
+	$Sprite3D.play("attack")
+	go_to_idle = true
 
 func idle():
 	$Sprite3D.play("idle")
 
+func hit():
+	$Sprite3D.play("hitting")
+	go_to_idle = true
 
 func hide_status():
 	$StatusBar.visible = false
+
+
+func animation_finished():
+	return $Sprite3D.frames.get_frame_count($Sprite3D.animation) - 1 == $Sprite3D.frame
+
+func _process(delta):
+	if go_to_idle and animation_finished():
+		idle()
+		go_to_idle = false
 
 
 func move_now(cell):
