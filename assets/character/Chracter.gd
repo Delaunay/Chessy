@@ -24,6 +24,8 @@ var unit_range = 4
 
 var abilities = []
 var go_to_idle = false
+var dead = false
+var mode = null
 
 func display(_viewport, _camera):
 	pass
@@ -36,10 +38,23 @@ func _ready():
 	$Sprite3D.play("idle")
 	$StatusBar.set_health(vitality)
 	$StatusBar.set_stamina(stamina)
+	
+	$ActionBar.visible = false
+	for slot in $ActionBar/Viewport/TextureRect/HBoxContainer.get_children():
+		print(slot.get_name())
+
+
+func __init__(mode_):
+	mode = mode_
+
 
 func update_health(value):
 	vitality += value
 	$StatusBar.set_health(vitality)
+	
+	if vitality <= 0:
+		$Sprite3D.play("dead")
+		dead = true
 
 func moving():
 	$Sprite3D.play("walking")
@@ -62,7 +77,13 @@ func hide_status():
 func animation_finished():
 	return $Sprite3D.frames.get_frame_count($Sprite3D.animation) - 1 == $Sprite3D.frame
 
+
 func _process(delta):
+	if dead and animation_finished():
+		visible = false
+		mode.remove_unit(self)
+		return
+
 	if go_to_idle and animation_finished():
 		idle()
 		go_to_idle = false

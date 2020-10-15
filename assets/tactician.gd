@@ -154,7 +154,7 @@ func _get_name(obj):
 
 
 func setup_abilities():
-	for ability_slot in get_tree().get_nodes_in_group("Abilities"):
+	for ability_slot in $HUD/ActionBar/HBoxContainer.get_children():
 		ability_slots.append(ability_slot)
 	
 	# Just make sure there is no weird ordering here
@@ -189,4 +189,5 @@ func call_ability(slot_id, slot):
 			unit.update_health(-10)
 		
 		select_action = null
+	slot.pressed()
 

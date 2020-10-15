@@ -61,6 +61,7 @@ func new_unit_world(kind, faction, pos):
 	else:
 		instance = character_asset.instance()
 	
+	instance.__init__(self)
 	instance.faction = faction
 	instance.cell = map_pos
 	instance.index = len(all_units)

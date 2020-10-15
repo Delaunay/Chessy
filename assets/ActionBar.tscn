@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/abilities/AbilityButton.tscn" type="PackedScene" id=1]
+
+[node name="TextureRect" type="TextureRect"]
+modulate = Color( 1, 1, 1, 0.47451 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 64, 64 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="A1" parent="HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 412.0
+margin_top = 268.0
+margin_right = 476.0
+margin_bottom = 332.0
+
+[node name="A2" parent="HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 480.0
+margin_top = 268.0
+margin_right = 544.0
+margin_bottom = 332.0
+
+[node name="A3" parent="HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 548.0
+margin_top = 268.0
+margin_right = 612.0
+margin_bottom = 332.0

@@ -3,7 +3,7 @@
 [ext_resource path="res://assets/character/skeleton_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://assets/character/Chracter.gd" type="Script" id=2]
 [ext_resource path="res://assets/character/StatusBar.gd" type="Script" id=3]
-[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://assets/ActionBar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/character/ActionBar.gd" type="Script" id=5]
 [ext_resource path="res://assets/character/StatusBar.tscn" type="PackedScene" id=6]
 
@@ -22,7 +22,7 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
 billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 9
+frame = 4
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -44,21 +44,15 @@ render_target_v_flip = true
 [node name="StatusBar" parent="StatusBar/Viewport" instance=ExtResource( 6 )]
 
 [node name="ActionBar" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00509501, 0.408245, 0.736712 )
 billboard = 1
+region_rect = Rect2( 0, 0, 100, 26 )
 script = ExtResource( 5 )
 
 [node name="Viewport" type="Viewport" parent="ActionBar"]
-size = Vector2( 100, 52 )
+size = Vector2( 280, 70 )
 transparent_bg = true
+usage = 0
+render_target_v_flip = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ActionBar/Viewport"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="TextureButton" type="TextureButton" parent="ActionBar/Viewport/HBoxContainer"]
-margin_right = 64.0
-margin_bottom = 64.0
-rect_min_size = Vector2( 64, 64 )
-texture_normal = ExtResource( 4 )
-expand = true
-stretch_mode = 5
+[node name="TextureRect" parent="ActionBar/Viewport" instance=ExtResource( 4 )]
