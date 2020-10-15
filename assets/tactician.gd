@@ -8,7 +8,9 @@ var mode = null
 var select_action = null
 var cursor_cell = null
 var ability_slots = []
-
+var human = false
+var can_process_input = false
+var color = null
 
 class Selection:
 	var cell
@@ -17,12 +19,17 @@ class Selection:
 	var range_cells
 
 
-func __init__(faction_, map, mode_):
+func __init__(faction_, map, mode_, human_):
 	faction = faction_
 	grid_map = map
 	mode = mode_
 	setup_abilities()
-	add_units()
+	human = human_
+	
+	if not human:
+		$Cursor.visible = false
+		$PathPreview.visible = false
+		$HUD.visible = false
 
 
 func new_selection(cell, world, unit, cells):
@@ -35,27 +42,7 @@ func new_selection(cell, world, unit, cells):
 
 
 func new_unit(kind, pos):
-	mode.new_unit_world(kind, faction, pos)
-
-
-func add_units():
-	# TODO: move this when the grid map is loaded
-	var positions = [
-		Vector3( 0, 0,  0),
-		# --
-		Vector3( 6, 0,  0),
-		Vector3(-6, 0,  0),
-		Vector3( 0, 0,  6),
-		Vector3( 0, 0, -6),
-		# --
-		Vector3( 6, 0,  6),
-		Vector3(-6, 0,  6),
-		Vector3(-6, 0, -6),
-		Vector3( 6, 0, -6)
-	]
-	
-	for p in positions:
-		var _cell = new_unit(1, p)
+	mode.new_unit_world(kind, faction, pos, color)
 
 
 func select_object(event, pos, collision):
@@ -70,13 +57,13 @@ func select_object(event, pos, collision):
 
 		if collision.collider is GridMap:
 			if selection != null:
-				var path = grid_map.select_move_path(selection.cell, cursor_cell)
-				mode.move(selection.unit, path)
-				selection.cell = path[-1]
-				select_action = selection
+				if selection.unit.faction == faction:
+					var path = grid_map.select_move_path(selection.cell, cursor_cell)
+					mode.move(selection.unit, path)
+					selection.cell = path[-1]
+					select_action = selection
 				selection = null
-				# selection.unit
-				
+
 			clear_path()
 		else:
 			obj = mode.character_asset.instance()
@@ -108,6 +95,12 @@ func clear_selection():
 
 
 func _input(event):
+	if not can_process_input:
+		return 
+
+	if grid_map == null:
+		return 
+
 	var collision = null
 	var pos = null
 
@@ -141,7 +134,7 @@ func _input(event):
 		select_object(event, pos, collision)
 
 		# if unit selected show move path
-		if selection != null and end in selection.range_cells:
+		if selection != null and end in selection.range_cells and selection.unit.faction == faction:
 			$Cursor.translate(pos - $Cursor.get_global_transform().origin)
 			cursor_cell = end
 			
@@ -189,5 +182,5 @@ func call_ability(slot_id, slot):
 			unit.update_health(-10)
 		
 		select_action = null
-	slot.pressed()
+	slot.press()
 

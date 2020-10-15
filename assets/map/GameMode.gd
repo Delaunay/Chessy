@@ -18,8 +18,19 @@ func __init__(map):
 	grid_map = map
 
 
+func add_ally(f1, f2):
+	var key
+	if f1 > f2:
+		key = f2 + f1
+	else:
+		key = f1 + f2
+
+	friend_or_foe[key] = true
+ 
+
 func new_faction(key):
-	unit_factions[key] = []
+	if not key in unit_factions:
+		unit_factions[key] = []
 
 
 func is_friend(f1, f2):
@@ -44,7 +55,7 @@ func move(unit, path):
 	moving.append([unit, path, 1])
 
 
-func new_unit_world(kind, faction, pos):
+func new_unit_world(kind, faction, pos, color):
 	#  insert a new charater on the map
 	var map_pos = grid_map.world_to_map(pos)
 
@@ -65,6 +76,7 @@ func new_unit_world(kind, faction, pos):
 	instance.faction = faction
 	instance.cell = map_pos
 	instance.index = len(all_units)
+	instance.set_color(color)
 
 	all_units.append(instance)
 	unit_factions[faction].append(instance)

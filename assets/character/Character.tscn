@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/character/skeleton_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://assets/character/Chracter.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/ActionBar.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/character/ActionBar.gd" type="Script" id=5]
 [ext_resource path="res://assets/character/StatusBar.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/character/CombatTextDisplay.gd" type="Script" id=7]
 
 [sub_resource type="ConvexPolygonShape" id=1]
 points = PoolVector3Array( 0, 0, 0, 0, 0, -1, -0.866, 0, -0.5, -0.866, 0, 0.5, 0, 0, 1, 0.866, 0, 0.5, 0.866, 0, -0.5, 0, 0.5, 0, 0, 0.5, -1, -0.866, 0.5, -0.5, -0.866, 0.5, 0.5, 0, 0.5, 1, 0.866, 0.5, 0.5, 0.866, 0.5, -0.5 )
@@ -22,7 +23,7 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
 billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 4
+frame = 12
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -30,7 +31,7 @@ transform = Transform( 0.736122, 0, 0.425, 0, 1.8364, 0, -0.425, 0, 0.736122, 0,
 shape = SubResource( 1 )
 
 [node name="StatusBar" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.64, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58924, 0 )
 billboard = 1
 region_rect = Rect2( 0, 0, 100, 26 )
 script = ExtResource( 3 )
@@ -56,3 +57,17 @@ usage = 0
 render_target_v_flip = true
 
 [node name="TextureRect" parent="ActionBar/Viewport" instance=ExtResource( 4 )]
+
+[node name="CombatTextDisplay" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.39031, 0 )
+billboard = 1
+script = ExtResource( 7 )
+
+[node name="Viewport" type="Viewport" parent="CombatTextDisplay"]
+size = Vector2( 200, 100 )
+transparent_bg = true
+render_target_v_flip = true
+
+[node name="Control" type="Control" parent="CombatTextDisplay/Viewport"]
+margin_right = 200.0
+margin_bottom = 100.0

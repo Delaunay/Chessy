@@ -18,17 +18,21 @@ func _process(delta):
 	$Sweep.value = int(($Timer.time_left / cooldown) * 100)
 	
 	if $Timer.time_left == 0:
-		timer_timeout()
+		_on_Timer_timeout()
 
 
-func pressed():
+func press():
+	_on_AbilityButton_pressed()
+
+
+func _on_AbilityButton_pressed():
 	disabled = true
 	set_process(true)
 	$Timer.start()
 	time_label.show()
 
 
-func timer_timeout():
+func _on_Timer_timeout():
 	$Sweep.value = 0
 	disabled = false
 	time_label.hide()

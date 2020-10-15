@@ -1,12 +1,17 @@
 extends GridMap
 
 
+onready var tactician = preload("res://assets/Tactician.tscn")
+
+
+var players = []
 var highlighted_tiles = []
 var base_axial_direction = [
 	Vector3(+1, 0, 0), Vector3(+1, 0, -1), Vector3(0, 0, -1), 
 	Vector3(-1, 0, 0), Vector3(-1, 0, +1), Vector3(0, 0, +1), 
 ]
 var axial_direction = neigboors()
+var turn = 0
 
 
 func neigboors():
@@ -20,12 +25,58 @@ func neigboors():
 	return neighs
 
 
+func init_player(player, faction, human, allies=[]):
+	$GameMode.new_faction(faction)
+
+	for ally in allies:
+		$GameMode.add_ally(faction, ally)
+	
+	player.__init__(faction, self, $GameMode, human)
+
+
+func add_units():
+	# TODO: move this when the grid map is loaded
+	var p1units = [Vector3( 0, 0,  0)]
+	
+	var p2units = [
+		# --
+		Vector3( 6, 0,  0),
+		Vector3(-6, 0,  0),
+		Vector3( 0, 0,  6),
+		Vector3( 0, 0, -6),
+		# --
+		Vector3( 6, 0,  6),
+		Vector3(-6, 0,  6),
+		Vector3(-6, 0, -6),
+		Vector3( 6, 0, -6)
+	]
+	
+	
+	for p in p1units:
+		players[0].new_unit(1, p)
+		
+	for p in p2units:
+		players[1].new_unit(1, p)
+
+
+func new_player(faction, human, allies=[]):
+	var player = tactician.instance()
+	init_player(player, faction, human, allies)
+	add_child(player)
+	players.append(player)
+	return player
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	load_map()
 	$GameMode.__init__(self)
-	$GameMode.new_faction('X')
-	$Tactician.__init__('X', self, $GameMode)
+	var p1 = new_player('Player1', true)
+	p1.can_process_input = true
+
+	var p2 = new_player('Player2', false)
+	p2.color = Color(125, 0, 0, 255)
+	add_units()
 
 
 func snap_to_grid(pos, offset=1):

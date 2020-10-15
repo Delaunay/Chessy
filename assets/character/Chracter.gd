@@ -27,6 +27,7 @@ var go_to_idle = false
 var dead = false
 var mode = null
 
+
 func display(_viewport, _camera):
 	pass
 	# viewport = self
@@ -51,9 +52,11 @@ func __init__(mode_):
 func update_health(value):
 	vitality += value
 	$StatusBar.set_health(vitality)
-	
+	$CombatTextDisplay.show_value(value)
+
 	if vitality <= 0:
 		$Sprite3D.play("dead")
+		$StatusBar.visible = false
 		dead = true
 
 func moving():
@@ -92,6 +95,10 @@ func _process(delta):
 func move_now(cell):
 	translate(cell - get_global_transform().origin)
 
+
+func set_color(color):
+	if color != null:
+		$Sprite3D.modulate = color
 
 func move(delta, dir):
 	# Get the camera's transform basis, but remove the X rotation such
