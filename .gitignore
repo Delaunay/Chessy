@@ -1,3 +1,9 @@
 bin/
 assets/art
+poliigon/
+.godot/
+*.blend1
+.import/
+old/
+research
 

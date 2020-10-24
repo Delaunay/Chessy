@@ -1,0 +1,32 @@
+[gd_resource type="AnimationNodeBlendTree" load_steps=6 format=2]
+
+[sub_resource type="AnimationNodeAnimation" id=2]
+animation = "WalkStraight"
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "WalkBackWard"
+
+[sub_resource type="AnimationNodeAnimation" id=4]
+animation = "TurnRight"
+
+[sub_resource type="AnimationNodeAnimation" id=5]
+animation = "TurnLeft"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=1]
+auto_triangles = false
+blend_point_0/node = SubResource( 2 )
+blend_point_0/pos = Vector2( 1, 0 )
+blend_point_1/node = SubResource( 3 )
+blend_point_1/pos = Vector2( -1, 0 )
+blend_point_2/node = SubResource( 4 )
+blend_point_2/pos = Vector2( 0, -1 )
+blend_point_3/node = SubResource( 5 )
+blend_point_3/pos = Vector2( 0, 1 )
+triangles = PoolIntArray( 0, 2, 3, 1, 2, 3 )
+
+[resource]
+graph_offset = Vector2( 0, -225.25 )
+nodes/BlendSpace2D/node = SubResource( 1 )
+nodes/BlendSpace2D/position = Vector2( 520, 100 )
+nodes/output/position = Vector2( 800, 20 )
+node_connections = [ "output", 0, "BlendSpace2D" ]
