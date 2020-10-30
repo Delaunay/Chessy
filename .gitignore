@@ -6,4 +6,5 @@ poliigon/
 .import/
 old/
 research
+*.import
 

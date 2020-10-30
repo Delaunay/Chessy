@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.godot/imported/QuadLegs.glb-f5dcafd3f07ecd7421de6fd0236ea2de.scn"
+path="res://.import/QuadLegs.glb-f5dcafd3f07ecd7421de6fd0236ea2de.scn"
 
 [deps]
 
 source_file="res://blender/reference/QuadLegs.glb"
-dest_files=[ "res://.godot/imported/QuadLegs.glb-f5dcafd3f07ecd7421de6fd0236ea2de.scn" ]
+dest_files=[ "res://.import/QuadLegs.glb-f5dcafd3f07ecd7421de6fd0236ea2de.scn" ]
 
 [params]
 

@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.godot/imported/FemaleBox.glb-a0fadbfb8221dd373517453e2d320205.scn"
+path="res://.import/FemaleBox.glb-a0fadbfb8221dd373517453e2d320205.scn"
 
 [deps]
 
 source_file="res://blender/reference/FemaleBox.glb"
-dest_files=[ "res://.godot/imported/FemaleBox.glb-a0fadbfb8221dd373517453e2d320205.scn" ]
+dest_files=[ "res://.import/FemaleBox.glb-a0fadbfb8221dd373517453e2d320205.scn" ]
 
 [params]
 
