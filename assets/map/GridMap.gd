@@ -37,18 +37,18 @@ func init_player(player, faction, human, allies=[]):
 func add_units():
 	# TODO: move this when the grid map is loaded
 	var p1units = [Vector3( 0, 0,  0)]
-	
+	var y = get_cell_size().y * 0.5
 	var p2units = [
 		# --
-		Vector3( 6, 0,  0),
-		Vector3(-6, 0,  0),
-		Vector3( 0, 0,  6),
-		Vector3( 0, 0, -6),
+		Vector3( 6, y,  0),
+		Vector3(-6, y,  0),
+		Vector3( 0, y,  6),
+		Vector3( 0, y, -6),
 		# --
-		Vector3( 6, 0,  6),
-		Vector3(-6, 0,  6),
-		Vector3(-6, 0, -6),
-		Vector3( 6, 0, -6)
+		Vector3( 6, y,  6),
+		Vector3(-6, y,  6),
+		Vector3(-6, y, -6),
+		Vector3( 6, y, -6)
 	]
 	
 	

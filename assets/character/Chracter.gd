@@ -132,7 +132,7 @@ func move(delta, dir):
 	velocity.x = hvel.x
 	velocity.z = hvel.z
 	velocity.y = hvel.y
-	velocity = move_and_slide(velocity, Vector3.UP)
+	# velocity = move_and_slide(velocity, Vector3.UP)
 
 
 func _physics_process(delta):

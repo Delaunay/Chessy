@@ -20,14 +20,13 @@ __meta__ = {
 
 [node name="Sprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
-billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 12
+frame = 2
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.736122, 0, 0.425, 0, 1.8364, 0, -0.425, 0, 0.736122, 0, -0.0022299, 0 )
+transform = Transform( 0.736708, 0, 0.425338, 0, 1.34814, 0, -0.425338, 0, 0.736708, 0, -0.0022299, 0 )
 shape = SubResource( 1 )
 
 [node name="StatusBar" type="Sprite3D" parent="."]
