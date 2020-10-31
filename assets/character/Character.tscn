@@ -25,7 +25,7 @@ transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
 billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 10
+frame = 1
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -75,3 +75,4 @@ margin_right = 200.0
 margin_bottom = 100.0
 
 [node name="Timer" type="Timer" parent="."]
+one_shot = true

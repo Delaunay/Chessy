@@ -103,7 +103,7 @@ func _process(delta):
 		var unit = m[0]
 		var path = m[1]
 		var p = path[m[2]]
-		unit.move_now(grid_map.map_to_world(p.x, p.y + 1, p.z))
+		unit.move_now(grid_map.map_to_world(p.x, p.y, p.z) + grid_map.offset)
 
 		if len(path) > m[2] + 1:
 			new_moving.append([unit, path, m[2] + 1])
