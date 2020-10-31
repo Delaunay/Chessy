@@ -76,6 +76,8 @@ func select_object(event, pos, collision):
 				var cells = grid_map.show_unit_range(cell, collision.collider.unit_range)
 				selection = new_selection(cell, pos, collision.collider, cells)
 				print('Unit selected')
+				# Unit selected enter Unit selection mode
+				$Cursor.visible = false
 			else:
 				selection = null
 				clear_path()
@@ -90,6 +92,7 @@ func draw_path(path):
 
 func clear_path():
 	$PathPreview.clear()
+	$Cursor.visible = true
 
 
 func clear_selection():

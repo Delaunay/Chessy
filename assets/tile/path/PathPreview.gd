@@ -3,16 +3,46 @@ extends Spatial
 onready var arrow = preload("res://assets/tile/path/Arrow.tscn")
 
 
-export var show_start = false
-export var show_end = false
+export var show_start = true
+export var show_end = true
 var used = []
 
+var prev_direction = {
+	Vector3( 0, 0, +1): preload("res://assets/tile/path/arrows/s0-1.png"),	# UP
+	Vector3( 0, 0, -1): preload("res://assets/tile/path/arrows/s0+1.png"),	# DOWN
+	Vector3(+1, 0, -1): preload("res://assets/tile/path/arrows/s-1+1.png"),
+	Vector3(+1, 0,  0): preload("res://assets/tile/path/arrows/s-10.png"),
+	Vector3(-1, 0, +1): preload("res://assets/tile/path/arrows/s+1-1.png"),
+	Vector3(-1, 0,  0): preload("res://assets/tile/path/arrows/s+10.png"),
+}
+
+var dest_direction = {
+	Vector3( 0, 0, +1): preload("res://assets/tile/path/arrows/e0+1.png"),	# UP
+	Vector3( 0, 0, -1): preload("res://assets/tile/path/arrows/e0-1.png"),	# DOWN
+	Vector3(+1, 0, -1): preload("res://assets/tile/path/arrows/e+1-1.png"),
+	Vector3(+1, 0,  0): preload("res://assets/tile/path/arrows/e+10.png"),
+	Vector3(-1, 0, +1): preload("res://assets/tile/path/arrows/e-1+1.png"),
+	Vector3(-1, 0,  0): preload("res://assets/tile/path/arrows/e-10.png"),
+}
+
+var start_tex = preload("res://assets/tile/path/arrows/start.png")
+var end_tex = preload("res://assets/tile/path/arrows/end.png")
+var empty_tex = preload("res://assets/tile/path/arrows/empty.png")
+var arrow_mat = preload("res://assets/tile/path/ArrowMaterial.tres")
+var mat_cache = {}
+ 
 
 func compute_angle(a, b):
 	var dot = (a.x * b.x + a.z * b.z)
 	var aa = sqrt(a.x * a.x + a.z * a.z)
 	var bb = sqrt(b.x * b.x + b.z * b.z)
 	return rad2deg(acos(dot / (aa * bb)))
+
+
+func new_tile(v1 , v2):
+	var parrow = arrow.instance()
+	parrow.set_material(get_material(v1, v2))
+	return parrow
 
 
 func add_tile(parrow, pos, grid_map):
@@ -24,11 +54,47 @@ func add_tile(parrow, pos, grid_map):
 	parrow.visible = true
 
 
+func get_material(d1, d2):
+	var result = mat_cache.get([d1, d2])
+
+	if result == null:
+		var tex1 = empty_tex
+		var tex2 = empty_tex
+		
+		if d1 is String:
+			if d1 == 'start':
+				tex1 = start_tex
+			elif d1 == 'end':
+				tex2 = end_tex
+		else:
+			tex1 = prev_direction.get(d1)
+			tex2 = dest_direction.get(d2)
+		
+		result = arrow_mat.duplicate()
+		result.set_shader_param("tex_frg_2", tex1)
+		result.set_shader_param("tex_frg_3", tex2)
+		mat_cache[[d1, d2]] = result
+
+	return result
+
+
 func show_path(path, grid_map):
 	clear()
-	
+
 	# Add the start and last tiles
 	if len(path) >= 2:
+		if show_start:
+			var v = path[0] - path[1]
+			v.y = 0
+			var parrow = new_tile('start', null)
+			add_tile(parrow, path[0], grid_map)
+			
+		if show_end:
+			var v = path[-1] - path[-2]
+			v.y = 0
+			var parrow = new_tile('end', null)
+			add_tile(parrow, path[-1], grid_map)
+
 		for k in range(1, len(path) - 1):
 			var p = path[k - 1]
 			var c = path[k]
@@ -36,9 +102,8 @@ func show_path(path, grid_map):
 			
 			var v1 = p - c
 			var v2 = c - n
-		
-			var parrow = arrow.instance()
-			parrow.__init__(v1, v2)
+
+			var parrow = new_tile(v1, v2)
 			add_tile(parrow, c, grid_map)
 
 

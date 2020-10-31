@@ -58,6 +58,7 @@ func _ready():
 func __init__(mode_):
 	mode = mode_
 
+
 func update_health(value):
 	vitality += value
 	$StatusBar.set_health(vitality)
