@@ -7,10 +7,13 @@ extends Spatial
 
 onready var path_left_right = preload("res://assets/tile/path/PathLeftRight.tscn")
 onready var path_left_top = preload("res://assets/tile/path/PathLeftTop.tscn")
+onready var path_left_bot = preload("res://assets/tile/path/PathLeftBot.tscn")
+onready var arrow = preload("res://assets/tile/path/Arrow.tscn")
 
 enum {
 	STRAIGHT,
-	TURN,
+	TURN_RIGHT,
+	TURN_LEFT,
 	START,
 	END
 }
@@ -26,7 +29,7 @@ func make_tile(kind):
 	if kind == STRAIGHT:
 		new_tile = path_left_right.instance()
 
-	elif kind == TURN:
+	elif kind == TURN_LEFT:
 		new_tile = path_left_top.instance()
 	
 	# catch all for now
@@ -39,25 +42,34 @@ func make_tile(kind):
 	return new_tile
 
 
+var straight_offset = 180
 var dir2angle = {
-	Vector3( 0, 0, -1):  60,
+	Vector3( 0, 0, -1):  60 + straight_offset,
 	Vector3( 0, 0,  1):  60,
-	Vector3( 1, 0, -1):   0,
+	Vector3( 1, 0, -1):   0 + straight_offset,
 	Vector3(-1, 0,  1):   0,
-	Vector3( 1, 0,  0): -60,
+	Vector3( 1, 0,  0): -60 + straight_offset,
 	Vector3(-1, 0,  0): -60
 }
 
-
+# set for directional path 
+var turn_offset = 180
 var turn2angle = {
-	Vector3( 1, 0, 0): 180,
-	Vector3(-1, 0, 0): 0,
-	Vector3(-1, 0, 1): 60,
+	Vector3( 1, 0, 0): 0,
+	Vector3(0, 0,  1): 120 + turn_offset,
+	Vector3(-1, 0, 1): 60 + turn_offset,
+	Vector3(-1, 0, 0): 0 + turn_offset,
+	
 	Vector3(1, 0, -1): -120,
-	Vector3(0, 0, -1): -60,
-	Vector3(0, 0,  1): 120,
+	Vector3(0, 0, -1): -60 + turn_offset,
 }
 
+
+var turn_left = {
+	Vector3( 1, 0, 0): TURN_LEFT,
+	Vector3(0, 0,  1): TURN_LEFT,
+	Vector3(-1, 0, 1): TURN_LEFT,
+}
 
 func compute_angle(a, b):
 	var dot = (a.x * b.x + a.z * b.z)
@@ -66,7 +78,17 @@ func compute_angle(a, b):
 	return rad2deg(acos(dot / (aa * bb)))
 
 
-func add_tile(kind, pos, angle, grid_map):
+
+func add_tile(parrow, pos, grid_map):
+	parrow.visible = false
+	add_child(parrow)
+	used.append(parrow)
+	parrow.set_global_transform(Transform())
+	parrow.translate(grid_map.map_to_world(pos.x, pos.y, pos.z))
+	parrow.visible = true
+
+
+func _add_tile(kind, pos, angle, grid_map):
 	var new_tile = make_tile(kind)
 	new_tile.set_global_transform(Transform())
 	new_tile.translate(grid_map.map_to_world(pos.x, pos.y, pos.z))
@@ -75,6 +97,24 @@ func add_tile(kind, pos, angle, grid_map):
 
 
 func show_path(path, grid_map):
+	clear()
+	
+	# Add the start and last tiles
+	if len(path) >= 2:
+		for k in range(1, len(path) - 1):
+			var p = path[k - 1]
+			var c = path[k]
+			var n = path[k + 1]
+			
+			var v1 = p - c
+			var v2 = c - n
+		
+			var parrow = arrow.instance()
+			parrow.__init__(v1, v2)
+			add_tile(parrow, c, grid_map)
+
+
+func _show_path(path, grid_map):
 	clear()
 
 	var kind = null
@@ -85,12 +125,12 @@ func show_path(path, grid_map):
 		if show_start:
 			var v = path[0] - path[1]
 			v.y = 0
-			add_tile(START, path[0], dir2angle.get(v), grid_map)
+			_add_tile(START, path[0], dir2angle.get(v), grid_map)
 			
 		if show_end:
 			var v = path[-1] - path[-2]
 			v.y = 0
-			add_tile(END, path[-1], dir2angle.get(v), grid_map)
+			_add_tile(END, path[-1], dir2angle.get(v), grid_map)
 
 	for k in range(1, len(path) - 1):
 		var p = path[k - 1]
@@ -104,17 +144,19 @@ func show_path(path, grid_map):
 		var is_turning = abs(turn_angle) > 0.01
 	
 		if is_turning:
-			kind = TURN
+			kind = TURN_LEFT
 			var v = v1 - v2
 			v.y = 0
+			print('T', v, v1, v2)
 			angle = turn2angle.get(v, 0)
 		else:
 			kind = STRAIGHT
 			var v = c - p
 			v.y = 0
+			print('S ', v)
 			angle = dir2angle.get(v)
 	
-		add_tile(kind, c, angle, grid_map)
+		_add_tile(kind, c, angle, grid_map)
 
 
 func clear():

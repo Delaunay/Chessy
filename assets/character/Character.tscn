@@ -22,9 +22,10 @@ __meta__ = {
 
 [node name="Sprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
+billboard = 1
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 11
+frame = 3
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
