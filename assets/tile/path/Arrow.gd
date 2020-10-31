@@ -30,13 +30,18 @@ var dest_direction = {
 	Vector3(-1, 0,  0): preload("res://assets/tile/path/arrows/e-10.png"),
 }
 
+var mat_cache = {}
+
+func get_mat(d1, d2):
+	var result = mat_cache.get([d1, d2])
+
+	if result == null:
+		result = $MeshInstance.get_surface_material(0).duplicate()
+		result.set_shader_param("tex_frg_2", prev_direction.get(d1))
+		result.set_shader_param("tex_frg_3", dest_direction.get(d2))
+		mat_cache[[d1, d2]] = result
+	
+	return result
 
 func __init__(d1, d2):
-	var mat = $MeshInstance.get_surface_material(0).duplicate()
-	mat.set_shader_param("tex_frg_2", prev_direction.get(d1))
-	mat.set_shader_param("tex_frg_3", dest_direction.get(d2))
-	$MeshInstance.set_surface_material(0, mat)
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+	$MeshInstance.set_surface_material(0, get_mat(d1, d2))
