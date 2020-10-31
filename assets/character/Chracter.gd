@@ -26,6 +26,8 @@ var abilities = []
 var go_to_idle = false
 var dead = false
 var mode = null
+var rng = RandomNumberGenerator.new()
+var initialized = false
 
 
 func display(_viewport, _camera):
@@ -34,20 +36,27 @@ func display(_viewport, _camera):
 	# viewport.add_child(self)
 	# camera.set_transform(self.get_transform())
 	# camera.translate(Vector3(1, 0, 1))
-	
+
+
 func _ready():
-	$Sprite3D.play("idle")
 	$StatusBar.set_health(vitality)
 	$StatusBar.set_stamina(stamina)
 	
 	$ActionBar.visible = false
 	# for slot in $ActionBar/Viewport/TextureRect/HBoxContainer.get_children():
 	#	print(slot.get_name())
+	
+	# set the animation to default to make idle start at different times
+	$Sprite3D.play("hitting")
+	rng.randomize()
+	var wtime = rng.randf_range(0, 1)
+	$Timer.connect("timeout", self, "idle")
+	$Timer.set_wait_time(wtime)
+	$Timer.start()
 
 
 func __init__(mode_):
 	mode = mode_
-
 
 func update_health(value):
 	vitality += value
