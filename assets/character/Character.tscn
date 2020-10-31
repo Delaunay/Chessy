@@ -9,9 +9,11 @@
 [ext_resource path="res://assets/character/CombatTextDisplay.gd" type="Script" id=7]
 
 [sub_resource type="ConvexPolygonShape" id=1]
+margin = 0.1
 points = PoolVector3Array( 0, 0, 0, 0, 0, -1, -0.866, 0, -0.5, -0.866, 0, 0.5, 0, 0, 1, 0.866, 0, 0.5, 0.866, 0, -0.5, 0, 0.5, 0, 0, 0.5, -1, -0.866, 0.5, -0.5, -0.866, 0.5, 0.5, 0, 0.5, 1, 0.866, 0.5, 0.5, 0.866, 0.5, -0.5 )
 
 [node name="Player" type="KinematicBody"]
+collision/safe_margin = 0.078
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true,
@@ -22,11 +24,11 @@ __meta__ = {
 transform = Transform( 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0.782218, 0 )
 frames = ExtResource( 1 )
 animation = "idle"
-frame = 2
+frame = 11
 playing = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 0.736708, 0, 0.425338, 0, 1.34814, 0, -0.425338, 0, 0.736708, 0, -0.0022299, 0 )
+transform = Transform( 0.519615, 0, 0.3, 0, 1.2, 0, -0.3, 0, 0.519615, 0, -0.0022299, 0 )
 shape = SubResource( 1 )
 
 [node name="StatusBar" type="Sprite3D" parent="."]

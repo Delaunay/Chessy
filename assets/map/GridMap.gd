@@ -12,6 +12,7 @@ var base_axial_direction = [
 ]
 var axial_direction = neigboors()
 var turn = 0
+var offset = Vector3(0, 0, 0)
 
 
 func neigboors():
@@ -69,6 +70,8 @@ func new_player(faction, human, allies=[]):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	offset = Vector3(0, get_cell_size().y * 0.5 + 0.1, 0)
+	
 	load_map()
 	$GameMode.__init__(self)
 	var p1 = new_player('Player1', true)

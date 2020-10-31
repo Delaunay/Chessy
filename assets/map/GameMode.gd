@@ -83,7 +83,7 @@ func new_unit_world(kind, faction, pos, color):
 	unit_positions[map_pos] = instance
 	add_child(instance)
 
-	var translate = world_pos + Vector3(0, grid_map.get_cell_size().y * 0.5 + 0.20, 0)
+	var translate = world_pos + grid_map.offset
 	instance.translate(translate)
 	return map_pos
 

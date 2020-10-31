@@ -57,6 +57,7 @@ func select_object(event, pos, collision):
 
 		if collision.collider is GridMap:
 			if selection != null:
+				print('Selection is not null')
 				if selection.unit.faction == faction:
 					var path = grid_map.select_move_path(selection.cell, cursor_cell)
 					mode.move(selection.unit, path)
@@ -65,16 +66,20 @@ func select_object(event, pos, collision):
 				selection = null
 
 			clear_path()
+			print('Grid Map selected')
 		else:
+			print(collision.collider)
 			obj = mode.character_asset.instance()
 			obj.hide_status()
 
 			if cell in mode.unit_positions:
 				var cells = grid_map.show_unit_range(cell, collision.collider.unit_range)
 				selection = new_selection(cell, pos, collision.collider, cells)
+				print('Unit selected')
 			else:
 				selection = null
 				clear_path()
+				print('Did not find a unit')
 
 		$HUD/UnitInfo.display(obj)
 
@@ -112,15 +117,19 @@ func _input(event):
 	if event is InputEventMouse:
 		collision = $Camera.select_object(event.position)
 
+	# This is a bit hacky
 	if collision:
+		var offset = 1
+
 		if collision.collider is GridMap:
 			pos = collision.position
 		else:
 			# Object should have a position which is compatible with 
 			# our grid system so we know that this will get us a tile
-			pos = collision.collider.get_global_transform().origin
+			pos = collision.collider.get_global_transform().origin - grid_map.offset
+			offset = 0
 
-		pos = grid_map.snap_to_grid(pos)
+		pos = grid_map.snap_to_grid(pos, offset)
 
 	# Move cursor
 	if pos != null:

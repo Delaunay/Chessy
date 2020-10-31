@@ -41,8 +41,8 @@ func _ready():
 	$StatusBar.set_stamina(stamina)
 	
 	$ActionBar.visible = false
-	for slot in $ActionBar/Viewport/TextureRect/HBoxContainer.get_children():
-		print(slot.get_name())
+	# for slot in $ActionBar/Viewport/TextureRect/HBoxContainer.get_children():
+	#	print(slot.get_name())
 
 
 func __init__(mode_):
