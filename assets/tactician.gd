@@ -19,6 +19,51 @@ class Selection:
 	var range_cells
 
 
+# UI state machine
+enum {
+	# We select a unit to move
+	UNIT_SELECT,
+	# Select where to move the unit
+	UNIT_MOVE,
+	# Execute an action after the move
+	UNIT_ACTION
+}
+
+var ui_state = UNIT_SELECT
+
+func transition(new_state):
+	# select our unit
+	if ui_state == UNIT_SELECT and new_state == UNIT_MOVE:
+		ui_state = new_state
+	
+	# Execute selected move
+	elif ui_state == UNIT_MOVE and new_state == UNIT_ACTION:
+		ui_state = new_state
+	
+	elif ui_state == UNIT_ACTION and new_state == UNIT_SELECT:
+		ui_state = new_state
+	
+	elif new_state == UNIT_SELECT:
+		pass
+
+	else:
+		print("Invalid state transition ", ui_state, " to ", new_state)
+
+
+func move_unit():
+	if ui_state != UNIT_MOVE:
+		print("Cannot move")
+		return
+	
+	if selection.unit.faction == faction:
+		var path = grid_map.select_move_path(selection.cell, cursor_cell)
+		mode.move(selection.unit, path)
+		selection.cell = path[-1]
+		select_action = selection
+	selection = null
+	transition()
+
+
 func __init__(faction_, map, mode_, human_):
 	faction = faction_
 	grid_map = map

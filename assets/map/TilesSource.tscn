@@ -6,6 +6,5 @@
 [node name="Scene Root" type="Spatial"]
 
 [node name="Base Tile" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
 
 [node name="Grass Tile" parent="." instance=ExtResource( 2 )]
